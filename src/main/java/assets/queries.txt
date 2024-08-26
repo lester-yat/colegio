@@ -1,0 +1,23 @@
+USE dbcolegio;
+
+CREATE TABLE Profesor (
+    ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    nombre NVARCHAR(50),
+    apellido NVARCHAR(50),
+    edad INT,
+    identificacion NVARCHAR(50),
+    tipo_identificacion NVARCHAR(50),
+    telefono NVARCHAR(50),
+    email NVARCHAR(50),
+    genero NVARCHAR(50),
+    direccion NVARCHAR(50),
+    fecha_nacimiento DATE,
+    estado_civil NVARCHAR(50),
+    especialidad NVARCHAR(50),
+    salario INT,
+    fecha_contratacion DATE,
+    fecha_terminacion_contrato DATE,
+    estado_contrato NVARCHAR(50),
+    tipo_contrato NVARCHAR(50),
+);
+

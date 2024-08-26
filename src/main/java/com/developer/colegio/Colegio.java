@@ -1,11 +1,13 @@
 package com.developer.colegio;
 
-import models.Conexion;
+import javax.swing.JFrame;
+import views.ListaProfesores;
+import views.CrearProfesores;
 
 public class Colegio {
-
     public static void main(String[] args) {
-        Conexion objetoconexion = new Conexion();
-        objetoconexion.establecerConexion();
+        ListaProfesores listaProfesores = new ListaProfesores();
+        listaProfesores.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        listaProfesores.setVisible(true);
     }
 }
