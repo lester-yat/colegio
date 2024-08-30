@@ -19,6 +19,7 @@ public class Conexion {
             try {
                 String cadena = "jdbc:sqlserver://localhost:"+puerto+";"+"databaseName="+bd+";encrypt=false;";
                 conectar=DriverManager.getConnection(cadena, usuario, contrasena);
+//                System.out.println("CONTECTADO");
             } catch (Exception e) {
                 System.out.println("Error al conectar a la base de datos, error: "+e.toString());
             }

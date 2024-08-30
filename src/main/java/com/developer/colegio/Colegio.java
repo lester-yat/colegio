@@ -1,13 +1,12 @@
 package com.developer.colegio;
 
 import javax.swing.JFrame;
-import views.ListaProfesores;
-import views.CrearProfesores;
+import views.Inicio;
 
 public class Colegio {
     public static void main(String[] args) {
-        ListaProfesores listaProfesores = new ListaProfesores();
-        listaProfesores.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        listaProfesores.setVisible(true);
+        Inicio inicio = new Inicio();
+        inicio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        inicio.setVisible(true);
     }
 }

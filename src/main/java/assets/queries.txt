@@ -21,3 +21,39 @@ CREATE TABLE Profesor (
     tipo_contrato NVARCHAR(50),
 );
 
+CREATE TABLE Grado (
+    ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    nombre NVARCHAR(50),
+    salon NVARCHAR(50),
+    nivel NVARCHAR(50),
+    anio DATE,
+    jornada NVARCHAR(50),
+    cantidad_max_estudiantes INT,
+);
+
+CREATE TABLE Seccion (
+    ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    nombre NVARCHAR(50),
+    horario_inicio TIME,
+    horario_final TIME,
+    GradoID INT NOT NULL,
+    FOREIGN KEY (GradoID) REFERENCES Grado(ID)
+);
+
+CREATE TABLE Profesor_grado (
+    ProfesorID INT NOT NULL,
+    GradoID INT NOT NULL,
+    SeccionID INT NOT NULL,
+    PRIMARY KEY (ProfesorID, GradoID, SeccionID),
+    FOREIGN KEY (ProfesorID) REFERENCES Profesor(ID) ON DELETE CASCADE,
+    FOREIGN KEY (GradoID) REFERENCES Grado(ID),
+    FOREIGN KEY (SeccionID) REFERENCES Seccion(ID)
+);
+
+ALTER TABLE Seccion 
+DROP CONSTRAINT IF EXISTS FK_Grado_Seccion;
+
+ALTER TABLE Seccion 
+ADD CONSTRAINT FK_Grado_Seccion 
+FOREIGN KEY (GradoID) REFERENCES Grado(ID) 
+ON DELETE CASCADE;

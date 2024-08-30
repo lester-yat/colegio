@@ -1,26 +1,25 @@
 package views;
 
-import java.awt.Event;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import models.Profesor;
-import models.ProfesoresDAO;
+import models.Grado;
+import models.GradoDAO;
 
-public class ListaProfesores extends javax.swing.JFrame {
+public class ListaGrados extends javax.swing.JFrame {
     
-    Profesor pr = new Profesor();
-    ProfesoresDAO profesor = new ProfesoresDAO();
+    Grado gr = new Grado();
+    GradoDAO grado = new GradoDAO();
     DefaultTableModel modelo = new DefaultTableModel();
     private int idSeleccionado;
-    
-    public ListaProfesores() {
+
+    public ListaGrados() {
         initComponents();
-        ListarProfesor();
+        ListarGrados();
         this.setLocationRelativeTo(null);
     }
-    
+
     public void LimpiarTabla() {
 //    modelo.setRowCount(0);
     for (int i = 0; i < modelo.getRowCount(); i++) {
@@ -29,23 +28,22 @@ public class ListaProfesores extends javax.swing.JFrame {
         }
     }
     
-    public void ListarProfesor(){
-        List<Profesor> ListarProf = profesor.listarProfesores();
-        modelo = (DefaultTableModel) tablaProfesores.getModel();
-        Object[] ob = new Object[9];
-        for (int i = 0; i < ListarProf.size(); i++) {
-            ob[0] = ListarProf.get(i).getId();
-            ob[1] = ListarProf.get(i).getIdentificacion();
-            ob[2] = ListarProf.get(i).getNombre() + " " + ListarProf.get(i).getApellido();
-            ob[3] = profesor.columnaGrados(ListarProf.get(i).getId());
-            ob[4] = profesor.columnaSecciones(ListarProf.get(i).getId());
-            ob[5] = ListarProf.get(i).getEspecialidad();
-            ob[6] = ListarProf.get(i).getEstado_contrato();
-            ob[7] = ListarProf.get(i).getFecha_contratacion();
-            ob[8] = ListarProf.get(i).getFecha_terminacion_contrato();
+    public void ListarGrados(){
+        List<Grado> ListarGrad = grado.listarGrados();
+        modelo = (DefaultTableModel) tablaGrados.getModel();
+        Object[] ob = new Object[8];
+        for (int i = 0; i < ListarGrad.size(); i++) {
+            ob[0] = ListarGrad.get(i).getId();
+            ob[1] = ListarGrad.get(i).getNombre();
+            ob[2] = ListarGrad.get(i).getSalon();
+            ob[3] = ListarGrad.get(i).getNivel();
+            ob[4] = ListarGrad.get(i).getAnio();
+            ob[5] = ListarGrad.get(i).getJornada();
+            ob[6] = ListarGrad.get(i).getCantidadMaxEstudiantes();
+            ob[7] = grado.consultarSeccion(ListarGrad.get(i).getId());
             modelo.addRow(ob);
         }
-        tablaProfesores.setModel(modelo);
+        tablaGrados.setModel(modelo);
     }
     
     @SuppressWarnings("unchecked")
@@ -57,7 +55,7 @@ public class ListaProfesores extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         btnCrear = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablaProfesores = new javax.swing.JTable();
+        tablaGrados = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -68,32 +66,27 @@ public class ListaProfesores extends javax.swing.JFrame {
 
         btnBuscar.setText("Buscar");
 
-        btnCrear.setText("Nuevo Profesor");
+        btnCrear.setText("Nuevo Grado");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearActionPerformed(evt);
             }
         });
 
-        tablaProfesores.setModel(new javax.swing.table.DefaultTableModel(
+        tablaGrados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Identificacion", "Nombre", "Grado", "Seccion", "Especialidad", "Estado Contrato", "Fecha Contratacion", "Fecha Terminacion"
+                "ID", "Nombre", "Salon", "Nivel", "Año", "Jornada", "Cantidad Estudiantes", "Seccion"
             }
         ));
-        tablaProfesores.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaGrados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaProfesoresMouseClicked(evt);
+                tablaGradosMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tablaProfesores);
-        if (tablaProfesores.getColumnModel().getColumnCount() > 0) {
-            tablaProfesores.getColumnModel().getColumn(0).setPreferredWidth(10);
-            tablaProfesores.getColumnModel().getColumn(3).setPreferredWidth(15);
-            tablaProfesores.getColumnModel().getColumn(4).setPreferredWidth(15);
-        }
+        jScrollPane1.setViewportView(tablaGrados);
 
         btnEditar.setText("Editar");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
@@ -110,7 +103,7 @@ public class ListaProfesores extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
-        jLabel1.setText("Listado de Profesores");
+        jLabel1.setText("Listado de Grados");
 
         btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
@@ -134,21 +127,19 @@ public class ListaProfesores extends javax.swing.JFrame {
                         .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(256, 256, 256))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnBuscar))
+                            .addComponent(jLabel1))
                         .addGap(481, 481, 481))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(58, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnRegresar)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(854, 854, 854)
-                            .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnBuscar))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(26, 26, 26)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1232, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(42, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,46 +155,32 @@ public class ListaProfesores extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnRegresar)
-                .addGap(17, 17, 17))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 790));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1290, 770));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
-        CrearProfesores vistaCrear = new CrearProfesores();
+        CrearGrado vistaCrear = new CrearGrado();
         vistaCrear.setVisible(true);
         dispose();
     }//GEN-LAST:event_btnCrearActionPerformed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        if (idSeleccionado > 0) {
-            int pregunta = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar");
-            if (pregunta == 0) {
-                ProfesoresDAO profesor = new ProfesoresDAO();
-                profesor.eliminarProfesor(idSeleccionado);
-                LimpiarTabla();
-                ListarProfesor();
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un profesor para eliminar.");
-        }
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void tablaProfesoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaProfesoresMouseClicked
-        int fila = tablaProfesores.rowAtPoint(evt.getPoint());
-        idSeleccionado = (int) tablaProfesores.getValueAt(fila, 0);
-    }//GEN-LAST:event_tablaProfesoresMouseClicked
+    private void tablaGradosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaGradosMouseClicked
+        int fila = tablaGrados.rowAtPoint(evt.getPoint());
+        idSeleccionado = (int) tablaGrados.getValueAt(fila, 0);
+    }//GEN-LAST:event_tablaGradosMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
         if (idSeleccionado > 0) {
-            EditarProfesor vistaEditar = new EditarProfesor(idSeleccionado);
+            EditarGrado vistaEditar = new EditarGrado(idSeleccionado);
             vistaEditar.setVisible(true);
             dispose();
         } else {
@@ -211,18 +188,36 @@ public class ListaProfesores extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        if (idSeleccionado > 0) {
+            int pregunta = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar");
+            if (pregunta == 0) {
+                GradoDAO grado = new GradoDAO();
+                grado.eliminarGrado(idSeleccionado);
+                LimpiarTabla();
+                ListarGrados();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione un profesor para eliminar.");
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         Inicio inicio = new Inicio();
         inicio.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
-    
+
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
-        
+
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ListaProfesores().setVisible(true);
+                new ListaGrados().setVisible(true);
             }
         });
     }
@@ -237,6 +232,6 @@ public class ListaProfesores extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tablaProfesores;
+    private javax.swing.JTable tablaGrados;
     // End of variables declaration//GEN-END:variables
 }
