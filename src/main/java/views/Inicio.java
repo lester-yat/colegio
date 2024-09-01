@@ -46,6 +46,11 @@ public class Inicio extends javax.swing.JFrame {
         });
 
         btnAlumnos.setText("Alumnos");
+        btnAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlumnosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -108,6 +113,13 @@ public class Inicio extends javax.swing.JFrame {
         listaSecciones.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnSeccionesActionPerformed
+
+    private void btnAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlumnosActionPerformed
+        ListaAlumnos listaAlumnos = new ListaAlumnos();
+        listaAlumnos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        listaAlumnos.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnAlumnosActionPerformed
 
     /**
      * @param args the command line arguments
