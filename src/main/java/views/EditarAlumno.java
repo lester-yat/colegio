@@ -52,18 +52,18 @@ public class EditarAlumno extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         selectGrado = new javax.swing.JComboBox<>();
         selectPadre = new javax.swing.JComboBox<>();
-        txtInscripcion1 = new javax.swing.JTextField();
+        txtFechaResgistro = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaSecciones = new javax.swing.JTable();
-        btnGuardar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
-        jLabel1.setText("Creacion de Alumno");
+        jLabel1.setText("Edicion de Alumno");
 
         jLabel2.setText("Nombres");
 
@@ -89,7 +89,7 @@ public class EditarAlumno extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addGap(18, 18, 18)
-                        .addComponent(txtInscripcion1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtFechaResgistro, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
@@ -147,7 +147,7 @@ public class EditarAlumno extends javax.swing.JFrame {
                     .addComponent(selectGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtInscripcion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFechaResgistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -162,10 +162,10 @@ public class EditarAlumno extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaSecciones);
 
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                btnActualizarActionPerformed(evt);
             }
         });
 
@@ -189,7 +189,7 @@ public class EditarAlumno extends javax.swing.JFrame {
                 .addGap(320, 320, 320))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(337, 337, 337)
-                .addComponent(btnGuardar)
+                .addComponent(btnActualizar)
                 .addGap(201, 201, 201)
                 .addComponent(btnCancelar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -220,7 +220,7 @@ public class EditarAlumno extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
+                    .addComponent(btnActualizar)
                     .addComponent(btnCancelar))
                 .addGap(121, 121, 121))
         );
@@ -239,7 +239,7 @@ public class EditarAlumno extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         //        if (!"".equals(txtNombre.getText()) && !"".equals(txtApellido.getText()) &&
             //            !"".equals(txtEdad.getText()) && !"".equals(txtInscripcion.getText()) &&
             //            !"".equals(selectPadre.getSelectedItem()) && !"".equals(selectGrado.getSelectedItem())) {
@@ -273,7 +273,7 @@ public class EditarAlumno extends javax.swing.JFrame {
             //        } else {
             //            JOptionPane.showMessageDialog(null, "Los campos estan vacios");
             //        }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         dispose();
@@ -317,8 +317,8 @@ public class EditarAlumno extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnGuardar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -336,8 +336,8 @@ public class EditarAlumno extends javax.swing.JFrame {
     private javax.swing.JTable tablaSecciones;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtEdad;
+    private javax.swing.JTextField txtFechaResgistro;
     private javax.swing.JTextField txtInscripcion;
-    private javax.swing.JTextField txtInscripcion1;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

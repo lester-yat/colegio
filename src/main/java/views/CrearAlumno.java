@@ -65,7 +65,7 @@ public class CrearAlumno extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         selectGrado = new javax.swing.JComboBox<>();
         selectPadre = new javax.swing.JComboBox<>();
-        txtInscripcion1 = new javax.swing.JTextField();
+        txtFechaResgistro = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaSecciones = new javax.swing.JTable();
@@ -116,7 +116,7 @@ public class CrearAlumno extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addGap(18, 18, 18)
-                        .addComponent(txtInscripcion1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtFechaResgistro, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
@@ -174,7 +174,7 @@ public class CrearAlumno extends javax.swing.JFrame {
                     .addComponent(selectGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtInscripcion1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFechaResgistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -356,8 +356,8 @@ public class CrearAlumno extends javax.swing.JFrame {
     private javax.swing.JTable tablaSecciones;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtEdad;
+    private javax.swing.JTextField txtFechaResgistro;
     private javax.swing.JTextField txtInscripcion;
-    private javax.swing.JTextField txtInscripcion1;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
