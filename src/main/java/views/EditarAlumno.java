@@ -77,7 +77,7 @@ public class EditarAlumno extends javax.swing.JFrame {
 
         jLabel7.setText("Grado");
 
-        jLabel9.setText("Inscripcion");
+        jLabel9.setText("Fecha Registro");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
