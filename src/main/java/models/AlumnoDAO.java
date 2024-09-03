@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AlumnoDAO {
     Conexion conexion = new Conexion();
@@ -25,7 +27,7 @@ public class AlumnoDAO {
                 al.setNombre(rs.getString("nombre"));
                 al.setApellido(rs.getString("apellido"));
                 al.setEdad(rs.getInt("edad"));
-                al.setInscripcion(rs.getInt("anio"));
+                al.setInscripcion(rs.getInt("InscripcionID"));
                 al.setPadre(rs.getInt("PadreID"));
                 al.setGrado(rs.getInt("GradoID"));
                 listAlum.add(al);
@@ -36,17 +38,15 @@ public class AlumnoDAO {
         return listAlum;
     }
     
-    public List listarGrados() {
-        List<Grado> listGrad = new ArrayList();
+    public List<Grado> listarGrados() {
+        List<Grado> listGrad = new ArrayList<>();
         String sql = "SELECT * FROM Grado";
 
-        try (
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery()) {
+        try (PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Grado gr = new Grado();
-                
                 gr.setId(rs.getInt("ID"));
                 gr.setNombre(rs.getString("nombre"));
                 gr.setSalon(rs.getString("salon"));
@@ -59,17 +59,19 @@ public class AlumnoDAO {
         } catch (SQLException e) {
             System.out.println("Error al listar los grados: " + e.toString());
         }
+
+        System.out.println("Total de grados encontrados: " + listGrad.size()); // Depuración.
         return listGrad;
     }
     
-    public List listarSecciones() {
+    public List listarSecciones(int idGrado) {
         List<Seccion> listSec = new ArrayList();
-        String sql = "SELECT * FROM Seccion";
+        String sql = "SELECT * FROM Seccion WHERE GradoID = ?";
 
-        try (
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery()) {
-
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idGrado);
+            ResultSet rs = ps.executeQuery();
+            
             while (rs.next()) {
                 Seccion sc = new Seccion();
                 
@@ -85,6 +87,57 @@ public class AlumnoDAO {
         }
         return listSec;
     }
+    
+    public String columnaGrados(int idAlumno) {
+        StringBuilder nombresGrados = new StringBuilder();
+        String sql = "SELECT g.nombre " +
+                     "FROM Grado g " +
+                     "INNER JOIN Alumno al ON g.ID = al.GradoID " +
+                     "WHERE al.ID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idAlumno);
+            ResultSet rs = ps.executeQuery();
+            
+            Set<String> gradosSet = new HashSet<>();
+            while (rs.next()) {
+                gradosSet.add(rs.getString("nombre"));
+            }
+            
+            nombresGrados.append(String.join(", ", gradosSet));
+
+        } catch (SQLException e) {
+            System.out.println("Error al consultar los nombres de los grados: " + e.getMessage());
+        }
+
+        return nombresGrados.toString();
+    }
+    
+    //    public List listarPadres() {
+//        List<Padre> listPad = new ArrayList();
+//        String sql = "SELECT * FROM Padre";
+//
+//        try (
+//            PreparedStatement ps = con.prepareStatement(sql);
+//            ResultSet rs = ps.executeQuery()) {
+//
+//            while (rs.next()) {
+//                Padre pr = new Padre();
+//                
+//                pr.setId(rs.getInt("ID"));
+//                pr.setNombre(rs.getString("nombre"));
+//                pr.setSalon(rs.getString("apellido"));
+//                pr.setNivel(rs.getString("nivel"));
+//                pr.setAnio(rs.getDate("anio"));
+//                pr.setJornada(rs.getString("jornada"));
+//                pr.setCantidadMaxEstudiantes(rs.getInt("cantidad_max_estudiantes"));
+//                listPad.add(pr);
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("Error al listar los padres: " + e.toString());
+//        }
+//        return listPad;
+//    }
     
     public Alumno consultarDatos(int id) {
         String sql = "SELECT * FROM Alumno WHERE ID = ?";
@@ -103,6 +156,7 @@ public class AlumnoDAO {
                     alumno.setInscripcion(rs.getInt("InscripcionID"));
                     alumno.setPadre(rs.getInt("PadreID"));
                     alumno.setGrado(rs.getInt("GradoID"));
+                    alumno.setFechaResgistro(rs.getDate("fecha_registro"));
                 }
             }
         } catch (SQLException e) {
@@ -112,71 +166,193 @@ public class AlumnoDAO {
         return alumno;
     }
     
-    public boolean consultarInscripcion(int idInscripcion){
-        return false;
+    public int consultarInscripcion(int idAlumno) {
+        String sql = "SELECT InscripcionID FROM Alumno WHERE ID = ?";
+        int idInscripcion = 0;
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idAlumno);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                idInscripcion = rs.getInt("InscripcionID");
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al consultar la inscripcion: " + e.getMessage());
+        }
+
+        return idInscripcion;
     }
     
-    public boolean guardarAlumno(Grado grado) {
-        String sql = "INSERT INTO Grado (nombre, salon, nivel, anio, jornada, cantidad_max_estudiantes) VALUES (?, ?, ?, ?, ?, ?)";
+    public int guardarAlumno(Alumno alumno) {
+        String sql = "INSERT INTO Alumno (nombre, apellido, edad, inscripcionID, PadreID, GradoID, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        int idGenerado = -1;
         
         try (
             PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, grado.getNombre());
-            ps.setString(2, grado.getSalon());
-            ps.setString(3, grado.getNivel());
-            ps.setDate(4, new java.sql.Date(grado.getAnio().getTime()));
-            ps.setString(5, grado.getJornada());
-            ps.setInt(6, grado.getCantidadMaxEstudiantes());
-
+            ps.setString(1, alumno.getNombre());
+            ps.setString(2, alumno.getApellido());
+            ps.setInt(3, alumno.getEdad());
+            ps.setInt(4, alumno.getInscripcion());
+            ps.setInt(5, alumno.getPadre());
+            ps.setInt(6, alumno.getGrado());
+            ps.setDate(7, new java.sql.Date(alumno.getFechaResgistro().getTime()));
+            
             ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                idGenerado = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al guardar el alumno: " + e.toString());
+        }
+        
+        return idGenerado;
+    }
+    
+    public boolean guardarAlumSecc(int idAlumno, List<Integer> listaRelaciones) {
+        String sql = "INSERT INTO Alumno_seccion (AlumnoID, SeccionID) VALUES (?, ?)";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            for (Integer idSeccion : listaRelaciones) {
+                ps.setInt(1, idAlumno);
+
+                if (idSeccion != -1) {
+                    ps.setInt(2, idSeccion);
+                } else {
+                    ps.setNull(2, java.sql.Types.INTEGER);
+                }
+
+                ps.addBatch();
+            }
+
+            ps.executeBatch();
             return true;
         } catch (SQLException e) {
-            System.out.println("Error al guardar el grado: " + e.toString());
+            System.out.println("Error al guardar las relaciones: " + e.toString());
             return false;
-        } finally{
-            try {
-                con.close();
-            } catch (Exception e) {
-                System.out.println("Error: " + e.toString());
-            }
         }
     }
     
-    
-    
     public boolean eliminarAlumno(int id) {
-        String sql = "DELETE FROM Grado WHERE ID = ?";
+        String sql = "DELETE FROM Alumno WHERE ID = ?";
         try (
             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.execute();
             return true;
         } catch (SQLException e) {
-            System.out.println("Error al eliminar el grado: " + e.toString());
+            System.out.println("Error al eliminar el alumno: " + e.toString());
             return false;
         }
     }
     
-    public boolean editarAlumno(Grado grado) {
-        String sql = "UPDATE Grado SET nombre = ?, salon = ?, nivel = ?, anio = ?, jornada = ?, cantidad_max_estudiantes = ? WHERE id = ?";
+    public boolean editarAlumno(Alumno alumno) {
+        String sql = "UPDATE Alumno SET nombre = ?, apellido = ?, edad = ?, InscripcionID = ?, PadreID = ?, GradoID = ?, fecha_registro = ? WHERE ID = ?";
 
         try (
             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, grado.getNombre());
-            ps.setString(2, grado.getSalon());
-            ps.setString(3, grado.getNivel());
-            ps.setDate(4, new java.sql.Date(grado.getAnio().getTime()));
-            ps.setString(5, grado.getJornada());
-            ps.setInt(6, grado.getCantidadMaxEstudiantes());
-            ps.setInt(7, grado.getId());
+            ps.setString(1, alumno.getNombre());
+            ps.setString(2, alumno.getApellido());
+            ps.setInt(3, alumno.getEdad());
+            ps.setInt(4, alumno.getInscripcion());
+            ps.setInt(5, alumno.getPadre());
+            ps.setInt(6, alumno.getGrado());
+            ps.setDate(7, new java.sql.Date(alumno.getFechaResgistro().getTime()));
+            ps.setInt(8, alumno.getID());
 
             int rows = ps.executeUpdate();
             return rows > 0;
 
         } catch (SQLException e) {
-            System.out.println("Error al actualizar el grado: " + e.toString());
+            System.out.println("Error al actualizar el alumno: " + e.toString());
             return false;
+        }
+    }
+    
+    public boolean editarAlumSecc(int idAlumno, List<Integer> listaIDSecciones) {
+        String sqlDelete = "DELETE FROM Alumno_seccion WHERE AlumnoID = ?";
+        String sqlInsert = "INSERT INTO Alumno_seccion (AlumnoID, SeccionID) VALUES (?, ?)";
+
+        PreparedStatement psDelete = null;
+        PreparedStatement psInsert = null;
+
+        try {
+            con.setAutoCommit(false);
+            
+            psDelete = con.prepareStatement(sqlDelete);
+            psDelete.setInt(1, idAlumno);
+            psDelete.executeUpdate();
+            
+            psInsert = con.prepareStatement(sqlInsert);
+            for (Integer idSeccion : listaIDSecciones) {
+                psInsert.setInt(1, idAlumno);
+                psInsert.setInt(2, idSeccion);
+                psInsert.addBatch();
+            }
+
+            psInsert.executeBatch();
+            con.commit();
+            return true;
+
+        } catch (SQLException e) {
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Error al deshacer cambios: " + ex.getMessage());
+                }
+            }
+            System.out.println("Error al guardar relaciones del alumno: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (psDelete != null) psDelete.close();
+                if (psInsert != null) psInsert.close();
+                if (con != null) con.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar recursos: " + e.getMessage());
+            }
+        }
+    }
+    
+    public List<Integer> obtenerSeccionesActuales(int idAlumno) {
+        List<Integer> seccionesActuales = new ArrayList<>();
+        String sql = "SELECT SeccionID FROM Alumno_seccion WHERE AlumnoID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idAlumno);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                seccionesActuales.add(rs.getInt("SeccionID"));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener las secciones actuales del alumno: " + e.toString());
+        }
+        return seccionesActuales;
+    }
+    
+    public void eliminarSeccionesPorAlumno(int idAlumno) {
+        String sql = "DELETE FROM Alumno_seccion WHERE AlumnoID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idAlumno);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar las secciones del alumno: " + e.toString());
+        }
+    }
+
+    public void insertarSeccionPorAlumno(int idAlumno, int idSeccion) {
+        String sql = "INSERT INTO Alumno_seccion (AlumnoID, SeccionID) VALUES (?, ?)";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idAlumno);
+            ps.setInt(2, idSeccion);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al insertar la sección del alumno: " + e.toString());
         }
     }
 }

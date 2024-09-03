@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Date;
+
 public class Alumno {
     int ID;
     String nombre;
@@ -8,11 +10,12 @@ public class Alumno {
     int inscripcion;
     int padre;
     int grado;
+    Date fechaResgistro;
 
     public Alumno() {
     }
 
-    public Alumno(int ID, String nombre, String apellido, int edad, int inscripcion, int padre, int grado) {
+    public Alumno(int ID, String nombre, String apellido, int edad, int inscripcion, int padre, int grado, Date fechaResgistro) {
         this.ID = ID;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -20,6 +23,7 @@ public class Alumno {
         this.inscripcion = inscripcion;
         this.padre = padre;
         this.grado = grado;
+        this.fechaResgistro = fechaResgistro;
     }
 
     public int getID() {
@@ -76,5 +80,13 @@ public class Alumno {
 
     public void setGrado(int grado) {
         this.grado = grado;
+    }
+
+    public Date getFechaResgistro() {
+        return fechaResgistro;
+    }
+
+    public void setFechaResgistro(Date fechaResgistro) {
+        this.fechaResgistro = fechaResgistro;
     }
 }

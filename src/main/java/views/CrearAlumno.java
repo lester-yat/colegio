@@ -3,45 +3,72 @@ package views;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import models.Alumno;
 import models.AlumnoDAO;
+import models.Grado;
+import models.Seccion;
 
 public class CrearAlumno extends javax.swing.JFrame {
     
     Alumno alumno = new Alumno();
     AlumnoDAO alumnoDAO = new AlumnoDAO();
+    DefaultTableModel modelo = new DefaultTableModel();
 
     public CrearAlumno() {
         initComponents();
         this.setLocationRelativeTo(null);
+        cargarGrados();
+//        cargarPadres();
     }
     
-    public void ListarSecciones() {
-//        List<Seccion> secciones = seccionDAO.listarSecciones();
-//        List<Grado> grados = seccionDAO.listarGrados();
-//        
-//        Map<Integer, String> gradoMap = new HashMap<>();
-//        for (Grado grado : grados) {
-//            gradoMap.put(grado.getId(), grado.getNombre());
+    public void cargarGrados(){
+        List<Grado> grados = alumnoDAO.listarGrados();
+        for (int i = 0; i < grados.size(); i++) {
+            String nombre = grados.get(i).getNombre();
+            selectGrado.addItem(nombre);
+        }
+    }
+    
+//    public void cargarPadres(){
+//        List<Padre> padres = alumnoDAO.listarPadres();
+//        for (int i = 0; i < padres.size(); i++) {
+//            String nombre = padres.get(i).getNombre();
+//            selectPadre.addItem(nombre);
 //        }
-//        
-//        modelo = (DefaultTableModel) tablaSecciones.getModel();
-//        modelo.setRowCount(0);
-//        
-//        for (Seccion seccion : secciones) {
-//            Object[] ob = new Object[5];
-//            ob[0] = seccion.getId();
-//            ob[1] = seccion.getNombre();
-//            ob[2] = seccion.getHorarioInicio();
-//            ob[3] = seccion.getHorarioFinal();
-//            ob[4] = gradoMap.get(seccion.getGrado());
-//
-//            modelo.addRow(ob);
-//        }
-//        
-//        tablaSecciones.setModel(modelo);
+//    }
+    
+    public void ListarSecciones(int idGrado) {
+        List<Seccion> secciones = alumnoDAO.listarSecciones(idGrado);
+        
+        modelo = (DefaultTableModel) tablaSecciones.getModel();
+        modelo.setRowCount(0);
+        
+        for (Seccion seccion : secciones) {
+            Object[] ob = new Object[4];
+            ob[0] = seccion.getId();
+            ob[1] = seccion.getNombre();
+            ob[2] = seccion.getHorarioInicio();
+            ob[3] = seccion.getHorarioFinal();
+            
+            modelo.addRow(ob);
+        }
+        
+        tablaSecciones.setModel(modelo);
+    }
+    
+    public List<Integer> obtenerIdsSeleccionadosSecciones() {
+        int[] filasSeleccionadas = tablaSecciones.getSelectedRows();
+        List<Integer> idsSeleccionados = new ArrayList<>();
+        for (int fila : filasSeleccionadas) {
+            int id = (int) tablaSecciones.getValueAt(fila, 0);
+            idsSeleccionados.add(id);
+        }
+        System.out.println("IDs seleccionados en Secciones: " + idsSeleccionados);
+        return idsSeleccionados;
     }
     
     @SuppressWarnings("unchecked")
@@ -103,6 +130,12 @@ public class CrearAlumno extends javax.swing.JFrame {
         jLabel6.setText("Padreo/Encargado");
 
         jLabel7.setText("Grado");
+
+        selectGrado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectGradoActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Fecha Registro");
 
@@ -187,6 +220,7 @@ public class CrearAlumno extends javax.swing.JFrame {
                 "ID", "Nombre", "Hora Inicio", "Hora Final"
             }
         ));
+        tablaSecciones.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPane1.setViewportView(tablaSecciones);
 
         btnGuardar.setText("Guardar");
@@ -264,40 +298,73 @@ public class CrearAlumno extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-//        if (!"".equals(txtNombre.getText()) && !"".equals(txtApellido.getText()) && 
-//            !"".equals(txtEdad.getText()) && !"".equals(txtInscripcion.getText()) && 
-//            !"".equals(selectPadre.getSelectedItem()) && !"".equals(selectGrado.getSelectedItem())) {
-//            try {
-////                SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
-//                alumno.setNombre(txtNombre.getText());
-//                alumno.setApellido(txtApellido.getText());
-//                alumno.setEdad(Integer.parseInt(txtEdad.getText()));
-//                alumno.setInscripcion(Integer.parseInt(txtInscripcion.getText()));
-//                alumno.setPadre(Integer.parseInt((String) selectPadre.getSelectedItem()));
-//                alumno.setGrado(Integer.parseInt((String) selectGrado.getSelectedItem()));
-//                
-////                List<Grado> grados = seccionDAO.listarGrados();
-////                for (Grado grado : grados) {
-////                    if (grado.getNombre().equals(selectGrado.getSelectedItem())) {
-////                        seccion.setGrado(grado.getId());
-////                        break;
-////                    }
-////                }
-//                
-//                seccionDAO.guardarSeccion(seccion);
-//                JOptionPane.showMessageDialog(null, "Seccion guardado exitosamente.");
-//                ListaSecciones vistaLista = new ListaSecciones();
-//                vistaLista.setVisible(true);
-//                dispose();
-//            } catch (NumberFormatException e) {
-//                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar la seccion: " + e.getMessage());
-//            }
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Los campos estan vacios");
-//        }
+        if (!"".equals(txtNombre.getText()) && !"".equals(txtApellido.getText()) && 
+            !"".equals(txtEdad.getText()) && !"".equals(txtInscripcion.getText()) && 
+            !"".equals(selectGrado.getSelectedItem())) {
+            try {
+//                SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+                alumno.setNombre(txtNombre.getText());
+                alumno.setApellido(txtApellido.getText());
+                alumno.setEdad(Integer.parseInt(txtEdad.getText()));
+                alumno.setInscripcion(Integer.parseInt(txtInscripcion.getText()));
+                alumno.setFechaResgistro(formatoFecha.parse(txtFechaResgistro.getText()));
+                alumno.setPadre(1);
+                
+//                List<Padre> padres = alumnoDAO.listarPadres();
+//                for (Padre padre : padres) {
+//                    if (padre.getNombre().equals(selectPadre.getSelectedItem())) {
+//                        alumno.setPadre(padre.getId());
+//                        break;
+//                    }
+//                }
+
+                List<Grado> grados = alumnoDAO.listarGrados();
+                for (Grado grado : grados) {
+                    if (grado.getNombre().equals(selectGrado.getSelectedItem())) {
+                        alumno.setGrado(grado.getId());
+                        break;
+                    }
+                }
+                
+                int idAlumno = alumnoDAO.guardarAlumno(alumno);
+                if (idAlumno == -1) {
+                    JOptionPane.showMessageDialog(null, "Error al guardar al alumno.");
+                    return;
+                }
+                
+                List<Integer> listaIDSecciones = obtenerIdsSeleccionadosSecciones();
+
+                if (!alumnoDAO.guardarAlumSecc(idAlumno, listaIDSecciones)) {
+                    JOptionPane.showMessageDialog(null, "Error al guardar las relaciones.");
+                    return;
+                }
+                
+                JOptionPane.showMessageDialog(null, "Alumno guardado exitosamente.");
+                ListaAlumnos vistaLista = new ListaAlumnos();
+                vistaLista.setVisible(true);
+                dispose();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar el alumno: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Los campos estan vacios");
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void selectGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectGradoActionPerformed
+        int idGrado = 0;
+        List<Grado> grados = alumnoDAO.listarGrados();
+            for (Grado grado : grados) {
+                    if (grado.getNombre().equals(selectGrado.getSelectedItem())) {
+                        idGrado = grado.getId();
+                        break;
+                    }
+                }
+        ListarSecciones(idGrado);
+    }//GEN-LAST:event_selectGradoActionPerformed
 
     /**
      * @param args the command line arguments

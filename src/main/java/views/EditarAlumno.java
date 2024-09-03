@@ -2,35 +2,104 @@ package views;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import models.Alumno;
 import models.AlumnoDAO;
+import models.Grado;
+import models.Seccion;
 
 public class EditarAlumno extends javax.swing.JFrame {
+    Alumno alumno = new Alumno();
+    AlumnoDAO alumnoDAO = new AlumnoDAO();
+    DefaultTableModel modelo = new DefaultTableModel();
+    private int alumnoId;
+    private Map<Integer, String> padreMap = new HashMap<>();
+    private Map<Integer, String> gradoMap = new HashMap<>();
 
     public EditarAlumno() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
     
+    public void cargarGrados(){
+        List<Grado> grados = alumnoDAO.listarGrados();
+        for (Grado grado : grados) {
+            String nombre = grado.getNombre();
+            int id = grado.getId(); 
+
+            gradoMap.put(id, nombre); // Mapea el ID del grado con su nombre.
+            selectGrado.addItem(nombre); // Añade el nombre del grado al JComboBox.
+        }
+    }
+    
+    public void ListarSecciones(int idGrado) {
+        List<Seccion> secciones = alumnoDAO.listarSecciones(idGrado);
+        
+        modelo = (DefaultTableModel) tablaSecciones.getModel();
+        modelo.setRowCount(0);
+        
+        for (Seccion seccion : secciones) {
+            Object[] ob = new Object[4];
+            ob[0] = seccion.getId();
+            ob[1] = seccion.getNombre();
+            ob[2] = seccion.getHorarioInicio();
+            ob[3] = seccion.getHorarioFinal();
+
+            modelo.addRow(ob);
+        }
+        
+        tablaSecciones.setModel(modelo);
+    }
+    
+    public List<Integer> obtenerIdsSeleccionadosSecciones() {
+        int[] filasSeleccionadas = tablaSecciones.getSelectedRows();
+        List<Integer> idsSeleccionados = new ArrayList<>();
+        for (int fila : filasSeleccionadas) {
+            int id = (int) tablaSecciones.getValueAt(fila, 0);
+            idsSeleccionados.add(id);
+        }
+        System.out.println("IDs seleccionados en Secciones: " + idsSeleccionados);
+        return idsSeleccionados;
+    }
+    
     public EditarAlumno(int alumnoId) {
         initComponents();
         this.setLocationRelativeTo(null);
+        cargarGrados();
+        this.alumnoId = alumnoId;
         
-//        this.alumnoId = alumnoId;
-        
-//        Alumno alumnoDAO = AlumnoDAO.consultarDatos(alumnoId);
-//
-//        if (grado != null) {
-//            txtNombre3.setText(grado.getNombre());
-//            txtSalon3.setText(grado.getSalon());
-//            txtNivel3.setText(grado.getNivel());
-//            txtAnio3.setText(String.valueOf(grado.getAnio()));
-//            txtJornada3.setText(grado.getJornada());
-//            txtCantMaxEstu3.setText(String.valueOf(grado.getCantidadMaxEstudiantes()));
-//        } else {
-//            System.out.println("No se encontró ningún grado con el ID: " + gradoId);
-//        }
+        Alumno alumno = alumnoDAO.consultarDatos(alumnoId);
+
+        if (alumno != null) {
+            txtNombre.setText(alumno.getNombre());
+            txtApellido.setText(alumno.getApellido());
+            txtEdad.setText(String.valueOf(alumno.getEdad()));
+            txtInscripcion.setText(String.valueOf(alumno.getInscripcion()));
+            
+            Integer padreID = alumno.getPadre();
+            if (padreID != null) {
+                String padreNombre = padreMap.get(padreID);
+                if (padreNombre != null) {
+                    selectPadre.setSelectedItem(padreNombre);
+                }
+            }
+            Integer gradoID = alumno.getGrado();
+            if (gradoID != null) {
+                String gradoNombre = gradoMap.get(gradoID);
+                if (gradoNombre != null) {
+                    selectGrado.setSelectedItem(gradoNombre);
+                }
+            }
+            txtFechaResgistro.setText(String.valueOf(alumno.getFechaResgistro()));
+            
+        } else {
+            System.out.println("No se encontró ningún alumno con el ID: " + alumnoId);
+        }
     }
     
     @SuppressWarnings("unchecked")
@@ -76,6 +145,12 @@ public class EditarAlumno extends javax.swing.JFrame {
         jLabel6.setText("Padreo/Encargado");
 
         jLabel7.setText("Grado");
+
+        selectGrado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectGradoActionPerformed(evt);
+            }
+        });
 
         jLabel9.setText("Fecha Registro");
 
@@ -160,6 +235,7 @@ public class EditarAlumno extends javax.swing.JFrame {
                 "ID", "Nombre", "Hora Inicio", "Hora Final"
             }
         ));
+        tablaSecciones.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPane1.setViewportView(tablaSecciones);
 
         btnActualizar.setText("Actualizar");
@@ -240,39 +316,60 @@ public class EditarAlumno extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-        //        if (!"".equals(txtNombre.getText()) && !"".equals(txtApellido.getText()) &&
-            //            !"".equals(txtEdad.getText()) && !"".equals(txtInscripcion.getText()) &&
-            //            !"".equals(selectPadre.getSelectedItem()) && !"".equals(selectGrado.getSelectedItem())) {
-            //            try {
-                ////                SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
-                //                alumno.setNombre(txtNombre.getText());
-                //                alumno.setApellido(txtApellido.getText());
-                //                alumno.setEdad(Integer.parseInt(txtEdad.getText()));
-                //                alumno.setInscripcion(Integer.parseInt(txtInscripcion.getText()));
-                //                alumno.setPadre(Integer.parseInt((String) selectPadre.getSelectedItem()));
-                //                alumno.setGrado(Integer.parseInt((String) selectGrado.getSelectedItem()));
-                //
-                ////                List<Grado> grados = seccionDAO.listarGrados();
-                ////                for (Grado grado : grados) {
-                    ////                    if (grado.getNombre().equals(selectGrado.getSelectedItem())) {
-                        ////                        seccion.setGrado(grado.getId());
-                        ////                        break;
-                        ////                    }
-                    ////                }
-                //
-                //                seccionDAO.guardarSeccion(seccion);
-                //                JOptionPane.showMessageDialog(null, "Seccion guardado exitosamente.");
-                //                ListaSecciones vistaLista = new ListaSecciones();
-                //                vistaLista.setVisible(true);
-                //                dispose();
-                //            } catch (NumberFormatException e) {
-                //                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
-                //            } catch (Exception e) {
-                //                JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar la seccion: " + e.getMessage());
-                //            }
-            //        } else {
-            //            JOptionPane.showMessageDialog(null, "Los campos estan vacios");
-            //        }
+        if (!"".equals(txtNombre.getText()) && !"".equals(txtApellido.getText()) &&
+            !"".equals(txtEdad.getText()) && !"".equals(txtInscripcion.getText()) &&
+            !"".equals(selectPadre.getSelectedItem()) && !"".equals(selectGrado.getSelectedItem()) &&
+            !"".equals(txtFechaResgistro.getText())) {
+            try {
+//              SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+                
+                alumno.setID(alumnoId);
+                alumno.setNombre(txtNombre.getText());
+                alumno.setApellido(txtApellido.getText());
+                alumno.setEdad(Integer.parseInt(txtEdad.getText()));
+                alumno.setInscripcion(Integer.parseInt(txtInscripcion.getText()));
+                alumno.setPadre(1);
+                
+//                List<Padre> padres = alumnoDAO.listarPadres();
+//                for (Padre padre : padres) {
+//                    if (padre.getNombre().equals(selectPadre.getSelectedItem())) {
+//                        alumno.setPadre(padre.getId());
+//                        break;
+//                    }
+//                }
+                                
+                List<Grado> grados = alumnoDAO.listarGrados();
+                for (Grado grado : grados) {
+                    if (grado.getNombre().equals(selectGrado.getSelectedItem())) {
+                        alumno.setGrado(grado.getId());
+                        break;
+                    }
+                }
+                                
+                alumno.setFechaResgistro(formatoFecha.parse(txtFechaResgistro.getText()));
+                
+                alumnoDAO.editarAlumno(alumno);
+
+                List<Integer> listaIDSecciones = obtenerIdsSeleccionadosSecciones();
+
+                if (!alumnoDAO.editarAlumSecc(alumnoId, listaIDSecciones)) {
+                    JOptionPane.showMessageDialog(null, "Error al guardar las relaciones.");
+                    return;
+                }
+                
+                JOptionPane.showMessageDialog(null, "Alumno guardado exitosamente.");
+                ListaAlumnos vistaLista = new ListaAlumnos();
+                vistaLista.setVisible(true);
+                dispose();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar la seccion: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Los campos estan vacios");
+        }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -280,6 +377,18 @@ public class EditarAlumno extends javax.swing.JFrame {
         ListaAlumnos vistaLista = new ListaAlumnos();
         vistaLista.setVisible(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void selectGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectGradoActionPerformed
+        int idGrado = 0;
+        List<Grado> grados = alumnoDAO.listarGrados();
+            for (Grado grado : grados) {
+                    if (grado.getNombre().equals(selectGrado.getSelectedItem())) {
+                        idGrado = grado.getId();
+                        break;
+                    }
+                }
+        ListarSecciones(idGrado);
+    }//GEN-LAST:event_selectGradoActionPerformed
 
     /**
      * @param args the command line arguments

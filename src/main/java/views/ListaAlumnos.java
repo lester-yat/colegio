@@ -29,32 +29,18 @@ public class ListaAlumnos extends javax.swing.JFrame {
     }
     
     public void ListarAlumnos(){
-//        List<Alumno> ListarAlum = alumnoDAO.listarAlumnos();
-//        modelo = (DefaultTableModel) tablaAlumnos.getModel();
-//        Object[] ob = new Object[5];
-//        for (int i = 0; i < ListarAlum.size(); i++) {
-//            ob[0] = ListarAlum.get(i).getID();
-//            ob[1] = ListarAlum.get(i).getNombre();
-//            ob[2] = ListarAlum.get(i).getApellido();
-//            ob[3] = alumnoDAO.consultarGrados(ListarAlum.get(i).getID());
-//            ob[4] = alumnoDAO.consultarInscripcion(ListarAlum.get(i).getID());
-//            modelo.addRow(ob);
-//        }
-//        tablaAlumnos.setModel(modelo);
-    }
-    
-    public void ListaGrados(){
-//        List<Grado> ListarGrad = profesorDAO.listarGrados();
-//        modelo = (DefaultTableModel) tablaGrados.getModel();
-//        Object[] ob = new Object[4];
-//        for (int i = 0; i < ListarGrad.size(); i++) {
-//            ob[0] = ListarGrad.get(i).getId();
-//            ob[1] = ListarGrad.get(i).getNombre();
-//            ob[2] = ListarGrad.get(i).getSalon();
-//            ob[3] = ListarGrad.get(i).getCantidadMaxEstudiantes();
-//            modelo.addRow(ob);
-//        }
-//        tablaGrados.setModel(modelo);
+        List<Alumno> ListarAlum = alumnoDAO.listarAlumnos();
+        modelo = (DefaultTableModel) tablaAlumnos.getModel();
+        Object[] ob = new Object[5];
+        for (int i = 0; i < ListarAlum.size(); i++) {
+            ob[0] = ListarAlum.get(i).getID();
+            ob[1] = ListarAlum.get(i).getNombre();
+            ob[2] = ListarAlum.get(i).getApellido();
+            ob[3] = alumnoDAO.columnaGrados(ListarAlum.get(i).getID());
+            ob[4] = alumnoDAO.consultarInscripcion(ListarAlum.get(i).getID());
+            modelo.addRow(ob);
+        }
+        tablaAlumnos.setModel(modelo);
     }
     
     @SuppressWarnings("unchecked")
@@ -84,9 +70,14 @@ public class ListaAlumnos extends javax.swing.JFrame {
                 "ID", "Nombres", "Apellidos", "Grado", "Inscrito"
             }
         ));
+        tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaAlumnosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaAlumnos);
 
-        btnCrear.setText("Nuevo Grado");
+        btnCrear.setText("Nuevo Alumno");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearActionPerformed(evt);
@@ -110,7 +101,7 @@ public class ListaAlumnos extends javax.swing.JFrame {
         btnBuscar.setText("Buscar");
 
         jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
-        jLabel1.setText("Listado de Grados");
+        jLabel1.setText("Listado Alumnos");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -205,7 +196,7 @@ public class ListaAlumnos extends javax.swing.JFrame {
             vistaEditar.setVisible(true);
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un profesor.");
+            JOptionPane.showMessageDialog(this, "Seleccione un alumno.");
         }
     }//GEN-LAST:event_btnEditarActionPerformed
 
@@ -218,7 +209,7 @@ public class ListaAlumnos extends javax.swing.JFrame {
                 ListarAlumnos();
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un profesor para eliminar.");
+            JOptionPane.showMessageDialog(this, "Seleccione un alumno para eliminar.");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -228,6 +219,11 @@ public class ListaAlumnos extends javax.swing.JFrame {
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
+        int fila = tablaAlumnos.rowAtPoint(evt.getPoint());
+        idSeleccionado = (int) tablaAlumnos.getValueAt(fila, 0);
+    }//GEN-LAST:event_tablaAlumnosMouseClicked
 
     /**
      * @param args the command line arguments
