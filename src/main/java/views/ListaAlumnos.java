@@ -15,6 +15,7 @@ public class ListaAlumnos extends javax.swing.JFrame {
     private int idSeleccionado;
     
     public ListaAlumnos() {
+        this.setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
         ListarAlumnos();

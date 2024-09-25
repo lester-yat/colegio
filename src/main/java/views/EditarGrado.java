@@ -15,8 +15,10 @@ public class EditarGrado extends javax.swing.JFrame {
     public int gradoId;
 
     public EditarGrado() {
+                this.setUndecorated(true);
         initComponents();
-        this.setLocationRelativeTo(null);
+            this.setLocationRelativeTo(null);
+            setResizable(false); 
     }
     
     public EditarGrado(int gradoId) {
@@ -42,138 +44,129 @@ public class EditarGrado extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel4 = new javax.swing.JPanel();
         jLabel22 = new javax.swing.JLabel();
-        txtNombre3 = new javax.swing.JTextField();
         jLabel23 = new javax.swing.JLabel();
-        txtSalon3 = new javax.swing.JTextField();
+        txtNombre3 = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
+        txtSalon3 = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         txtNivel3 = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
         txtAnio3 = new javax.swing.JTextField();
-        txtJornada3 = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
-        txtCantMaxEstu3 = new javax.swing.JTextField();
+        txtJornada3 = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
+        txtCantMaxEstu3 = new javax.swing.JTextField();
         btnActualizar1 = new javax.swing.JButton();
         btnCancelar1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel22.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
+        jLabel22.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel22.setFont(new java.awt.Font("Monospaced", 1, 36)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setText("Edicion Grado");
+        getContentPane().add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, 310, 33));
 
+        jLabel23.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel23.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
         jLabel23.setText("Nombre");
+        getContentPane().add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, -1, -1));
 
+        txtNombre3.setBackground(new java.awt.Color(255, 255, 255));
+        txtNombre3.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        txtNombre3.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(txtNombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 80, 330, -1));
+
+        jLabel24.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(255, 255, 255));
         jLabel24.setText("Salon");
+        getContentPane().add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 130, -1, -1));
 
+        txtSalon3.setBackground(new java.awt.Color(255, 255, 255));
+        txtSalon3.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        txtSalon3.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(txtSalon3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 130, 330, -1));
+
+        jLabel25.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(255, 255, 255));
         jLabel25.setText("Nivel");
+        getContentPane().add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 190, -1, -1));
 
+        txtNivel3.setBackground(new java.awt.Color(255, 255, 255));
+        txtNivel3.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        txtNivel3.setForeground(new java.awt.Color(0, 0, 0));
+        txtNivel3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNivel3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtNivel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 180, 330, -1));
+
+        jLabel26.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(255, 255, 255));
         jLabel26.setText("Año");
+        getContentPane().add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 240, -1, -1));
 
+        txtAnio3.setBackground(new java.awt.Color(255, 255, 255));
+        txtAnio3.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        txtAnio3.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(txtAnio3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 230, 330, -1));
+
+        jLabel27.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
         jLabel27.setText("Jornada");
+        getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 280, -1, -1));
 
+        txtJornada3.setBackground(new java.awt.Color(255, 255, 255));
+        txtJornada3.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        txtJornada3.setForeground(new java.awt.Color(0, 0, 0));
+        getContentPane().add(txtJornada3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 280, 330, -1));
+
+        jLabel28.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(255, 255, 255));
         jLabel28.setText("Cantidad Max Estudiantes");
+        getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 330, -1, -1));
 
+        txtCantMaxEstu3.setBackground(new java.awt.Color(255, 255, 255));
+        txtCantMaxEstu3.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        txtCantMaxEstu3.setForeground(new java.awt.Color(0, 0, 0));
+        txtCantMaxEstu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCantMaxEstu3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtCantMaxEstu3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 330, 330, -1));
+
+        btnActualizar1.setBackground(new java.awt.Color(255, 255, 255));
+        btnActualizar1.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        btnActualizar1.setForeground(new java.awt.Color(0, 0, 0));
+        btnActualizar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/actualizar.png"))); // NOI18N
         btnActualizar1.setText("Actualizar");
         btnActualizar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActualizarActionPerformed(evt);
             }
         });
+        getContentPane().add(btnActualizar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 390, -1, -1));
 
+        btnCancelar1.setBackground(new java.awt.Color(255, 255, 255));
+        btnCancelar1.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        btnCancelar1.setForeground(new java.awt.Color(0, 0, 0));
+        btnCancelar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/calcelar.png"))); // NOI18N
         btnCancelar1.setText("Cancelar");
         btnCancelar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
+        getContentPane().add(btnCancelar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 400, -1, -1));
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(204, 204, 204)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(191, 191, 191)
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel26)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtAnio3))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel25)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNivel3))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel24)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtSalon3))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                                .addGap(107, 107, 107)
-                                .addComponent(jLabel23)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNombre3))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel27)
-                                    .addComponent(jLabel28))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCantMaxEstu3, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
-                                    .addComponent(txtJornada3))))
-                        .addGap(265, 265, 265))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnActualizar1)
-                .addGap(73, 73, 73)
-                .addComponent(btnCancelar1)
-                .addGap(295, 295, 295))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel23))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSalon3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel24))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNivel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAnio3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel26))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtJornada3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel27))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCantMaxEstu3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel28))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnActualizar1)
-                    .addComponent(btnCancelar1))
-                .addGap(39, 39, 39))
-        );
-
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 910, 520));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/69.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 970, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -216,6 +209,14 @@ public class EditarGrado extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
+    private void txtNivel3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNivel3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNivel3ActionPerformed
+
+    private void txtCantMaxEstu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantMaxEstu3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantMaxEstu3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -232,6 +233,7 @@ public class EditarGrado extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar1;
     private javax.swing.JButton btnCancelar1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
@@ -239,7 +241,6 @@ public class EditarGrado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JTextField txtAnio3;
     private javax.swing.JTextField txtCantMaxEstu3;
     private javax.swing.JTextField txtJornada3;

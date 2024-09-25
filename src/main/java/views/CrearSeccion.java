@@ -15,6 +15,7 @@ public class CrearSeccion extends javax.swing.JFrame {
     SeccionDAO seccionDAO = new SeccionDAO();
 
     public CrearSeccion() {
+        this.setUndecorated(true);
         initComponents();
         cargarGrados();
     }

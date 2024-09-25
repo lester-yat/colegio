@@ -13,6 +13,7 @@ public class CrearGrado extends javax.swing.JFrame {
     GradoDAO gradoDAO = new GradoDAO();
 
     public CrearGrado() {
+        this.setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
     }

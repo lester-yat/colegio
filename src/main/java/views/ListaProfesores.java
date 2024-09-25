@@ -5,8 +5,17 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import models.Profesor;
 import models.ProfesoresDAO;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+
+
 
 public class ListaProfesores extends javax.swing.JFrame {
     
@@ -15,10 +24,47 @@ public class ListaProfesores extends javax.swing.JFrame {
     DefaultTableModel modelo = new DefaultTableModel();
     private int idSeleccionado;
     
+    // busqueda 
+    
+     private TableRowSorter<DefaultTableModel> sorter;
+    private boolean isFilterActive = false;
+    
     public ListaProfesores() {
+        this.setUndecorated(true);
         initComponents();
         ListarProfesor();
         this.setLocationRelativeTo(null);
+                    
+            setResizable(false); 
+            
+        sorter = new TableRowSorter<>(modelo);
+        tablaProfesores.setRowSorter(sorter);
+        
+               // Agregar listener al campoBuscar para filtrar mientras se escribe
+        campoBuscar.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (isFilterActive) {
+                    filtrarTabla();
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (isFilterActive) {
+                    filtrarTabla();
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if (isFilterActive) {
+                    filtrarTabla();
+                }
+            }
+        });
+        
+        
     }
     
     public void LimpiarTabla() {
@@ -52,29 +98,104 @@ public class ListaProfesores extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        campoBuscar = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         btnCrear = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablaProfesores = new javax.swing.JTable();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        btnRegresar = new javax.swing.JButton();
+        campoBuscar = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaProfesores = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnBuscar.setText("Buscar");
+        btnRegresar.setBackground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setFont(new java.awt.Font("Monospaced", 1, 18)); // NOI18N
+        btnRegresar.setForeground(new java.awt.Color(0, 0, 0));
+        btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/return2.png"))); // NOI18N
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 120, 50));
 
+        jLabel1.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel1.setFont(new java.awt.Font("Monospaced", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Listado de Profesores");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 10, -1, 50));
+
+        btnCrear.setBackground(new java.awt.Color(255, 255, 255));
+        btnCrear.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        btnCrear.setForeground(new java.awt.Color(0, 0, 0));
+        btnCrear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/teachers.png"))); // NOI18N
         btnCrear.setText("Nuevo Profesor");
         btnCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearActionPerformed(evt);
             }
         });
+        getContentPane().add(btnCrear, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, 60));
 
+        btnEditar.setBackground(new java.awt.Color(255, 255, 255));
+        btnEditar.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(0, 0, 0));
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/edit.png"))); // NOI18N
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 110, 220, 60));
+
+        btnEliminar.setBackground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(0, 0, 0));
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 110, 220, 60));
+
+        campoBuscar.setBackground(new java.awt.Color(255, 255, 255));
+        campoBuscar.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        campoBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        campoBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoBuscarActionPerformed(evt);
+            }
+        });
+        campoBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                campoBuscarKeyTyped(evt);
+            }
+        });
+        getContentPane().add(campoBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 770, 50));
+
+        btnBuscar.setBackground(new java.awt.Color(255, 255, 255));
+        btnBuscar.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        btnBuscar.setForeground(new java.awt.Color(0, 0, 0));
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/seracher.png"))); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 220, 60));
+
+        tablaProfesores.setBackground(new java.awt.Color(204, 204, 204));
+        tablaProfesores.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14)), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Monospaced", 1, 14), new java.awt.Color(0, 0, 0))); // NOI18N
+        tablaProfesores.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        tablaProfesores.setForeground(new java.awt.Color(0, 0, 0));
         tablaProfesores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -83,95 +204,24 @@ public class ListaProfesores extends javax.swing.JFrame {
                 "ID", "Identificacion", "Nombre", "Grado", "Seccion", "Especialidad", "Estado Contrato", "Fecha Contratacion", "Fecha Terminacion"
             }
         ));
+        tablaProfesores.setSelectionForeground(new java.awt.Color(153, 0, 153));
+        tablaProfesores.getTableHeader().setReorderingAllowed(false);
         tablaProfesores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tablaProfesoresMouseClicked(evt);
             }
         });
+        tablaProfesores.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tablaProfesoresKeyTyped(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaProfesores);
-        if (tablaProfesores.getColumnModel().getColumnCount() > 0) {
-            tablaProfesores.getColumnModel().getColumn(0).setPreferredWidth(10);
-            tablaProfesores.getColumnModel().getColumn(3).setPreferredWidth(15);
-            tablaProfesores.getColumnModel().getColumn(4).setPreferredWidth(15);
-        }
 
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 1030, 290));
 
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
-        jLabel1.setText("Listado de Profesores");
-
-        btnRegresar.setText("Regresar");
-        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegresarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60)
-                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(66, 66, 66)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(256, 256, 256))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(481, 481, 481))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnRegresar)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(854, 854, 854)
-                            .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnBuscar))
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(26, 26, 26)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1232, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(42, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(jLabel1)
-                .addGap(46, 46, 46)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCrear, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(btnRegresar)
-                .addGap(17, 17, 17))
-        );
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1300, 790));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/69.png"))); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1110, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -217,6 +267,44 @@ public class ListaProfesores extends javax.swing.JFrame {
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    
+    
+    
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+      isFilterActive = true; // Activar el filtro tras hacer clic en el botón Buscar
+        filtrarTabla();
+  
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+        private void filtrarTabla() {
+        String query = campoBuscar.getText();
+        if (query.trim().length() == 0) {
+            sorter.setRowFilter(null); // Resetea el filtro si no hay texto
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query));
+        }
+    }
+
+ 
+        
+        
+    private void campoBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoBuscarActionPerformed
+
+    private void campoBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoBuscarKeyTyped
+        // TODO add your handling code here:
+        
+     
+    }//GEN-LAST:event_campoBuscarKeyTyped
+
+    private void tablaProfesoresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaProfesoresKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaProfesoresKeyTyped
+    
+
     
     public static void main(String args[]) {
         
@@ -235,7 +323,7 @@ public class ListaProfesores extends javax.swing.JFrame {
     private javax.swing.JButton btnRegresar;
     private javax.swing.JTextField campoBuscar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaProfesores;
     // End of variables declaration//GEN-END:variables

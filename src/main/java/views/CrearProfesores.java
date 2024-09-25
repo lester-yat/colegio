@@ -25,6 +25,7 @@ public class CrearProfesores extends javax.swing.JFrame {
     String nombreGrado = "";
     
     public CrearProfesores() {
+        this.setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
         ListaGrados();

@@ -15,6 +15,7 @@ public class ListaGrados extends javax.swing.JFrame {
     private int idSeleccionado;
 
     public ListaGrados() {
+        this.setUndecorated(true);
         initComponents();
         ListarGrados();
         this.setLocationRelativeTo(null);

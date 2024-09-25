@@ -19,6 +19,7 @@ public class CrearAlumno extends javax.swing.JFrame {
     DefaultTableModel modelo = new DefaultTableModel();
 
     public CrearAlumno() {
+        this.setUndecorated(true);
         initComponents();
         this.setLocationRelativeTo(null);
         cargarGrados();
