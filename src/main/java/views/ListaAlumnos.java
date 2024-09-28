@@ -203,12 +203,16 @@ public class ListaAlumnos extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (idSeleccionado > 0) {
-            int pregunta = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar");
-            if (pregunta == 0) {
-                alumnoDAO.eliminarAlumno(idSeleccionado);
-                LimpiarTabla();
-                ListarAlumnos();
-            }
+//            if (alumnoDAO.tieneDependencias(idSeleccionado)) {
+//                JOptionPane.showMessageDialog(this, "No se puede eliminar. El alumno tiene secciones asociadas.");
+//            } else {
+                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar?");
+                if (pregunta == 0) {
+                    alumnoDAO.eliminarAlumno(idSeleccionado);
+                    LimpiarTabla();
+                    ListarAlumnos();
+                }
+//            }
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un alumno para eliminar.");
         }

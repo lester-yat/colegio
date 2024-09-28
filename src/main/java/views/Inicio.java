@@ -28,6 +28,8 @@ public class Inicio extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         btnPadres = new javax.swing.JButton();
         btnInscripcion = new javax.swing.JButton();
+        btnNotas = new javax.swing.JButton();
+        btnCursos = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -119,6 +121,22 @@ public class Inicio extends javax.swing.JFrame {
         });
         getContentPane().add(btnInscripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 260, -1, -1));
 
+        btnNotas.setText("Notas");
+        btnNotas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNotasActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnNotas, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 260, -1, -1));
+
+        btnCursos.setText("Cursos");
+        btnCursos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCursosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnCursos, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 260, -1, -1));
+
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/69.png"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1110, 640));
         jLabel2.getAccessibleContext().setAccessibleName("");
@@ -180,6 +198,20 @@ public class Inicio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnInscripcionActionPerformed
 
+    private void btnNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotasActionPerformed
+        ListaNotas listaNotas = new ListaNotas();
+        listaNotas.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        listaNotas.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnNotasActionPerformed
+
+    private void btnCursosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCursosActionPerformed
+        ListaCursos listaCursos = new ListaCursos();
+        listaCursos.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        listaCursos.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCursosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -217,8 +249,10 @@ public class Inicio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlumnos;
+    private javax.swing.JButton btnCursos;
     private javax.swing.JButton btnGrados;
     private javax.swing.JButton btnInscripcion;
+    private javax.swing.JButton btnNotas;
     private javax.swing.JButton btnPadres;
     private javax.swing.JButton btnProfesores;
     private javax.swing.JButton btnSecciones;

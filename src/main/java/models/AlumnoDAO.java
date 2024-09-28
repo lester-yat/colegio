@@ -59,8 +59,6 @@ public class AlumnoDAO {
         } catch (SQLException e) {
             System.out.println("Error al listar los grados: " + e.toString());
         }
-
-        System.out.println("Total de grados encontrados: " + listGrad.size()); // Depuración.
         return listGrad;
     }
     
@@ -113,7 +111,7 @@ public class AlumnoDAO {
         return nombresGrados.toString();
     }
     
-    //    public List listarPadres() {
+//    public List listarPadres() {
 //        List<Padre> listPad = new ArrayList();
 //        String sql = "SELECT * FROM Padre";
 //
@@ -139,28 +137,25 @@ public class AlumnoDAO {
 //        return listPad;
 //    }
     
-    
-        
-        
-  public List<Padre> listarPadres() {
-    List<Padre> padres = new ArrayList<>();
-    String sql = "SELECT id, nombre, apellido FROM padre";
-    try {
-        PreparedStatement ps = con.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Padre padre = new Padre();
-            padre.setId(rs.getInt("ID"));
-            padre.setNombre(rs.getString("nombre"));
-            padre.setApellido(rs.getString("apellido"));
-            padres.add(padre);
+    public List<Padre> listarPadres() {
+        List<Padre> padres = new ArrayList<>();
+        String sql = "SELECT id, nombre, apellido FROM padre";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Padre padre = new Padre();
+                padre.setId(rs.getInt("ID"));
+                padre.setNombre(rs.getString("nombre"));
+                padre.setApellido(rs.getString("apellido"));
+                padres.add(padre);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al listar padres: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al listar padres: " + e.getMessage());
+        return padres;
     }
-    return padres;
-}
-    
+
     public Alumno consultarDatos(int id) {
         String sql = "SELECT * FROM Alumno WHERE ID = ?";
         Alumno alumno = new Alumno();
@@ -377,4 +372,18 @@ public class AlumnoDAO {
             System.out.println("Error al insertar la sección del alumno: " + e.toString());
         }
     }
+    
+//    public boolean tieneDependencias(int idAlumno) {
+//        String sql = "SELECT COUNT(*) FROM Alumno_seccion WHERE AlumnoID = ?";
+//        try (PreparedStatement ps = con.prepareStatement(sql)) {
+//            ps.setInt(1, idAlumno);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt(1) > 0; // Si hay registros relacionados
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 }

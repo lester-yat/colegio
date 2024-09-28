@@ -1,3 +1,5 @@
+CREATE DATABASE dbcolegio;
+
 USE dbcolegio;
 
 CREATE TABLE Profesor (
@@ -17,9 +19,8 @@ CREATE TABLE Profesor (
     salario INT,
     fecha_contratacion DATE,
     fecha_terminacion_contrato DATE,
-    
     estado_contrato NVARCHAR(50),
-    tipo_contrato NVARCHAR(50),
+    tipo_contrato NVARCHAR(50)
 );
 
 CREATE TABLE Grado (
@@ -29,7 +30,7 @@ CREATE TABLE Grado (
     nivel NVARCHAR(50),
     anio DATE,
     jornada NVARCHAR(50),
-    cantidad_max_estudiantes INT,
+    cantidad_max_estudiantes INT
 );
 
 CREATE TABLE Seccion (
@@ -37,49 +38,99 @@ CREATE TABLE Seccion (
     nombre NVARCHAR(50),
     horario_inicio TIME,
     horario_final TIME,
-    GradoID INT NOT NULL,
-    FOREIGN KEY (GradoID) REFERENCES Grado(ID)
+    GradoID INT,
+    FOREIGN KEY (GradoID) REFERENCES Grado(ID) ON DELETE SET NULL
 );
 
-CREATE TABLE Profesor_grado (
-    ProfesorID INT NOT NULL,
-    GradoID INT NOT NULL,
-    SeccionID INT NOT NULL,
-    PRIMARY KEY (ProfesorID, GradoID, SeccionID),
-    FOREIGN KEY (ProfesorID) REFERENCES Profesor(ID) ON DELETE CASCADE,
-    FOREIGN KEY (GradoID) REFERENCES Grado(ID),
-    FOREIGN KEY (SeccionID) REFERENCES Seccion(ID)
+CREATE TABLE Padre (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    nombre NVARCHAR(100),
+    apellido NVARCHAR(100),
+    edad INT,
+    identificacion NVARCHAR(50),
+    telefono NVARCHAR(20),
+    parentesco NVARCHAR(50)
 );
 
-ALTER TABLE Seccion 
-DROP CONSTRAINT IF EXISTS FK_Grado_Seccion;
-
-ALTER TABLE Seccion 
-ADD CONSTRAINT FK_Grado_Seccion 
-FOREIGN KEY (GradoID) REFERENCES Grado(ID) 
-ON DELETE CASCADE;
+CREATE TABLE Inscripcion (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    gradoid INT NOT NULL,
+    fecha_inscripcion DATE,
+    FOREIGN KEY (gradoid) REFERENCES Grado(id)
+);
 
 CREATE TABLE Alumno (
     ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
     nombre NVARCHAR(50),
     apellido NVARCHAR(50),
     edad INT,
-    InscripcionID INT,
+    InscripcionID INT,  -- Se puede agregar, pero no como clave foránea
     PadreID INT,
-    GradoID INT NOT NULL,
+    GradoID INT,
     fecha_registro DATE,
-    FOREIGN KEY (GradoID) REFERENCES Grado(ID)
+    FOREIGN KEY (GradoID) REFERENCES Grado(ID) ON DELETE SET NULL,
+    FOREIGN KEY (PadreID) REFERENCES Padre(ID) ON DELETE SET NULL
+);
+
+ALTER TABLE Alumno
+ADD FOREIGN KEY (InscripcionID) REFERENCES Inscripcion(ID) ON DELETE SET NULL;
+
+CREATE TABLE Curso (
+    ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    nombre NVARCHAR(100) NOT NULL,
+    descripcion NVARCHAR(255),
+    nivel NVARCHAR(50),
+    ProfesorID INT,
+    GradoID INT,
+    SeccionID INT,
+    FOREIGN KEY (ProfesorID) REFERENCES Profesor(ID) ON DELETE SET NULL,
+    FOREIGN KEY (GradoID) REFERENCES Grado(ID) ON DELETE SET NULL,
+    FOREIGN KEY (SeccionID) REFERENCES Seccion(ID) ON DELETE SET NULL
+);
+
+CREATE TABLE Nota (
+    ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    nombre NVARCHAR(50),
+    calificacion FLOAT,
+    fecha_registro DATE,
+    AlumnoID INT,
+    CursoID INT,
+    FOREIGN KEY (AlumnoID) REFERENCES Alumno(ID) ON DELETE CASCADE,
+    FOREIGN KEY (CursoID) REFERENCES Curso(ID) ON DELETE SET NULL
+);
+
+CREATE TABLE Alumno_padre (
+    alumnoid INT NOT NULL,
+    padreid INT NOT NULL,
+    PRIMARY KEY (alumnoid, padreid),
+    FOREIGN KEY (alumnoid) REFERENCES Alumno(ID) ON DELETE CASCADE,
+    FOREIGN KEY (padreid) REFERENCES Padre(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Alumno_seccion (
+    alumnoid INT NOT NULL,
+    seccionid INT NOT NULL,
+    PRIMARY KEY (alumnoid, seccionid),
+    FOREIGN KEY (alumnoid) REFERENCES Alumno(ID) ON DELETE CASCADE,
+    FOREIGN KEY (seccionid) REFERENCES Seccion(id)
+);
+
+CREATE TABLE Profesor_grado (
+    ProfesorID INT NULL,
+    GradoID INT NULL,
+    SeccionID INT NULL,
+    FOREIGN KEY (ProfesorID) REFERENCES Profesor(ID) ON DELETE SET NULL,
+    FOREIGN KEY (GradoID) REFERENCES Grado(ID) ON DELETE SET NULL,
+    FOREIGN KEY (SeccionID) REFERENCES Seccion(ID) ON DELETE SET NULL
 );
 
 CREATE TABLE Alumno_seccion (
     AlumnoID INT NOT NULL,
-    SeccionID INT NOT NULL,
-    PRIMARY KEY (AlumnoID, SeccionID),
+    SeccionID INT NULL,  -- Permitir que SeccionID sea NULL
+    PRIMARY KEY (AlumnoID),  -- Solo AlumnoID en la clave primaria
     FOREIGN KEY (AlumnoID) REFERENCES Alumno(ID) ON DELETE CASCADE,
-    FOREIGN KEY (SeccionID) REFERENCES Seccion(ID)
+    FOREIGN KEY (SeccionID) REFERENCES Seccion(ID) ON DELETE SET NULL
 );
-
-
 
 CREATE TABLE inicio(
     ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -89,8 +140,7 @@ CREATE TABLE inicio(
 
 -- Insertar el usuario admin con contraseña encriptada 'admin123'
 INSERT INTO inicio (nombre_usuario, contraseña)
-VALUES ('admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'); -- Hash SHA-256 de 'admin123'
-
+VALUES ('admin', '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'); -- Hash SHA-256 de 'admin123';
 
 -- EJECUTAR CUANDO YA ESTEN LAS TABLAS DE INSCRIPCION Y PADRES
 CREATE TABLE Alumno (
@@ -98,10 +148,10 @@ CREATE TABLE Alumno (
     nombre NVARCHAR(50),
     apellido NVARCHAR(50),
     edad INT,
-    InscripcionID INT, -- Referencia a la tabla Inscripcion
-    PadreID INT,       -- Referencia a la tabla Padre
-    GradoID INT NOT NULL,
-    FOREIGN KEY (GradoID) REFERENCES Grado(ID) ON DELETE CASCADE, -- Eliminación en cascada al eliminar un Grado
-    FOREIGN KEY (PadreID) REFERENCES Padre(ID) ON DELETE CASCADE, -- Eliminación en cascada al eliminar un Padre
-    FOREIGN KEY (InscripcionID) REFERENCES Inscripcion(ID) ON DELETE CASCADE -- Eliminación en cascada al eliminar una Inscripción
+    InscripcionID INT,  -- Referencia a la tabla Inscripcion
+    PadreID INT,        -- Referencia a la tabla Padre
+    GradoID INT,        -- Cambiado a INT sin NOT NULL para permitir SET NULL
+    FOREIGN KEY (GradoID) REFERENCES Grado(ID) ON DELETE SET NULL,        -- Cambiado a ON DELETE SET NULL
+    FOREIGN KEY (PadreID) REFERENCES Padre(ID) ON DELETE SET NULL,        -- Cambiado a ON DELETE SET NULL
+    FOREIGN KEY (InscripcionID) REFERENCES Inscripcion(ID) ON DELETE SET NULL -- Cambiado a ON DELETE SET NULL
 );

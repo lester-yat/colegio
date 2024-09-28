@@ -175,7 +175,7 @@ public class EditarAlumno extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Inscripcion");
+        jLabel5.setText("No. Inscripcion");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 300, -1, -1));
 
         txtInscripcion.setBackground(new java.awt.Color(255, 255, 255));

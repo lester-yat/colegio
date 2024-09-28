@@ -191,15 +191,19 @@ public class ListaGrados extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (idSeleccionado > 0) {
-            int pregunta = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar");
-            if (pregunta == 0) {
-                GradoDAO grado = new GradoDAO();
-                grado.eliminarGrado(idSeleccionado);
-                LimpiarTabla();
-                ListarGrados();
-            }
+            GradoDAO gradoDAO = new GradoDAO();
+//            if (gradoDAO.tieneDependencias(idSeleccionado)) {
+//                JOptionPane.showMessageDialog(this, "No se puede eliminar. El grado tiene secciones relacionadas.");
+//            } else {
+                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar?");
+                if (pregunta == 0) {
+                    gradoDAO.eliminarGrado(idSeleccionado);
+                    LimpiarTabla();
+                    ListarGrados();
+                }
+//            }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un profesor para eliminar.");
+            JOptionPane.showMessageDialog(this, "Seleccione un grado para eliminar.");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 

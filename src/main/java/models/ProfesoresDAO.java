@@ -459,4 +459,18 @@ public class ProfesoresDAO {
         }
         return nombre;
     }
+    
+//    public boolean tieneDependencias(int idProfesor) {
+//        String sql = "SELECT COUNT(*) FROM Curso WHERE ProfesorID = ?";
+//        try (PreparedStatement ps = con.prepareStatement(sql)) {
+//            ps.setInt(1, idProfesor);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt(1) > 0; // Si hay registros relacionados
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 }

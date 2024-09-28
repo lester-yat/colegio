@@ -3,14 +3,14 @@ package models;
 import java.util.Date;
 
 public class Alumno {
-    int ID;
-    String nombre;
-    String apellido;
-    int edad;
-    int inscripcion;
-    int padre;
-    int grado;
-    Date fechaResgistro;
+    private int ID;
+    private String nombre;
+    private String apellido;
+    private int edad;
+    private int inscripcion;
+    private int padre;
+    private int grado;
+    private Date fechaResgistro;
 
     public Alumno() {
     }

@@ -234,13 +234,17 @@ public class ListaProfesores extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (idSeleccionado > 0) {
-            int pregunta = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar");
-            if (pregunta == 0) {
-                ProfesoresDAO profesor = new ProfesoresDAO();
-                profesor.eliminarProfesor(idSeleccionado);
-                LimpiarTabla();
-                ListarProfesor();
-            }
+            ProfesoresDAO profesorDAO = new ProfesoresDAO();
+//            if (profesorDAO.tieneDependencias(idSeleccionado)) {
+//                JOptionPane.showMessageDialog(this, "No se puede eliminar. El profesor está asignado a uno o más cursos.");
+//            } else {
+                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar?");
+                if (pregunta == 0) {
+                    profesorDAO.eliminarProfesor(idSeleccionado);
+                    LimpiarTabla();
+                    ListarProfesor();
+                }
+//            }
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione un profesor para eliminar.");
         }
@@ -267,9 +271,6 @@ public class ListaProfesores extends javax.swing.JFrame {
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
-
-    
-    
     
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
@@ -278,7 +279,7 @@ public class ListaProfesores extends javax.swing.JFrame {
   
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-        private void filtrarTabla() {
+    private void filtrarTabla() {
         String query = campoBuscar.getText();
         if (query.trim().length() == 0) {
             sorter.setRowFilter(null); // Resetea el filtro si no hay texto
@@ -287,9 +288,6 @@ public class ListaProfesores extends javax.swing.JFrame {
         }
     }
 
- 
-        
-        
     private void campoBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoBuscarActionPerformed
@@ -303,8 +301,6 @@ public class ListaProfesores extends javax.swing.JFrame {
     private void tablaProfesoresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaProfesoresKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_tablaProfesoresKeyTyped
-    
-
     
     public static void main(String args[]) {
         

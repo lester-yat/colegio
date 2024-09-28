@@ -190,4 +190,18 @@ public class GradoDAO {
             return false;
         }
     }
+    
+//    public boolean tieneDependencias(int idGrado) {
+//        String sql = "SELECT COUNT(*) FROM Seccion WHERE GradoID = ?";
+//        try (PreparedStatement ps = con.prepareStatement(sql)) {
+//            ps.setInt(1, idGrado);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt(1) > 0; // Si hay registros relacionados
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 }

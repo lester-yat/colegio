@@ -232,15 +232,19 @@ public class ListaSecciones extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (idSeleccionado > 0) {
-            int pregunta = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar");
-            if (pregunta == 0) {
-                SeccionDAO seccionDAO = new SeccionDAO();
-                seccionDAO.eliminarSeccion(idSeleccionado);
-                LimpiarTabla();
-                ListarSecciones();
-            }
+            SeccionDAO seccionDAO = new SeccionDAO();
+//            if (seccionDAO.tieneDependencias(idSeleccionado)) {
+//                JOptionPane.showMessageDialog(this, "No se puede eliminar. La sección está asignada a uno o más alumnos.");
+//            } else {
+                int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar?");
+                if (pregunta == 0) {
+                    seccionDAO.eliminarSeccion(idSeleccionado);
+                    LimpiarTabla();
+                    ListarSecciones();
+                }
+//            }
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un profesor para eliminar.");
+            JOptionPane.showMessageDialog(this, "Seleccione una sección para eliminar.");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
@@ -257,18 +261,15 @@ public class ListaSecciones extends javax.swing.JFrame {
         filtrarTabla();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-          private void filtrarTabla() {
+    private void filtrarTabla() {
         String query = campoBuscar.getText();
         if (query.trim().length() == 0) {
-            sorter.setRowFilter(null); // Resetea el filtro si no hay texto
+            sorter.setRowFilter(null);
         } else {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + query));
         }
     }
     
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

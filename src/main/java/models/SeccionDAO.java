@@ -146,4 +146,18 @@ public class SeccionDAO {
         }
         return listGrad;
     }
+    
+//    public boolean tieneDependencias(int idSeccion) {
+//        String sql = "SELECT COUNT(*) FROM Alumno_seccion WHERE SeccionID = ?";
+//        try (PreparedStatement ps = con.prepareStatement(sql)) {
+//            ps.setInt(1, idSeccion);
+//            ResultSet rs = ps.executeQuery();
+//            if (rs.next()) {
+//                return rs.getInt(1) > 0; // Si hay registros relacionados
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 }
