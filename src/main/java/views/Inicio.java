@@ -26,13 +26,14 @@ public class Inicio extends javax.swing.JFrame {
         btnSecciones = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        btnPadres = new javax.swing.JButton();
+        btnInscripcion = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         salir.setBackground(new java.awt.Color(255, 255, 255));
-        salir.setForeground(new java.awt.Color(0, 0, 0));
         salir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/x.png"))); // NOI18N
         salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -43,7 +44,6 @@ public class Inicio extends javax.swing.JFrame {
 
         btnGrados.setBackground(new java.awt.Color(255, 255, 255));
         btnGrados.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
-        btnGrados.setForeground(new java.awt.Color(0, 0, 0));
         btnGrados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/grados.png"))); // NOI18N
         btnGrados.setText("Grados");
         btnGrados.addActionListener(new java.awt.event.ActionListener() {
@@ -55,7 +55,6 @@ public class Inicio extends javax.swing.JFrame {
 
         btnAlumnos.setBackground(java.awt.Color.white);
         btnAlumnos.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
-        btnAlumnos.setForeground(new java.awt.Color(0, 0, 0));
         btnAlumnos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/clss.png"))); // NOI18N
         btnAlumnos.setText("Alumnos");
         btnAlumnos.addActionListener(new java.awt.event.ActionListener() {
@@ -67,7 +66,6 @@ public class Inicio extends javax.swing.JFrame {
 
         btnProfesores.setBackground(new java.awt.Color(255, 255, 255));
         btnProfesores.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
-        btnProfesores.setForeground(new java.awt.Color(0, 0, 0));
         btnProfesores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/teachers.png"))); // NOI18N
         btnProfesores.setText("Profesores");
         btnProfesores.addActionListener(new java.awt.event.ActionListener() {
@@ -79,7 +77,6 @@ public class Inicio extends javax.swing.JFrame {
 
         btnSecciones.setBackground(new java.awt.Color(255, 255, 255));
         btnSecciones.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
-        btnSecciones.setForeground(new java.awt.Color(0, 0, 0));
         btnSecciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/secc.png"))); // NOI18N
         btnSecciones.setText("Secciones");
         btnSecciones.addActionListener(new java.awt.event.ActionListener() {
@@ -97,7 +94,6 @@ public class Inicio extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/removeuser.png"))); // NOI18N
         jButton1.setText("Cerrar Sesion");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -106,6 +102,22 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, 210, 60));
+
+        btnPadres.setText("Padres");
+        btnPadres.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPadresActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnPadres, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 260, -1, -1));
+
+        btnInscripcion.setText("Inscripciones");
+        btnInscripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInscripcionActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnInscripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 260, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/69.png"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1110, 640));
@@ -156,6 +168,18 @@ public class Inicio extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnPadresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPadresActionPerformed
+        // TODO add your handling code here:
+        ListadoPadre listaPadre = new ListadoPadre();
+        listaPadre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        listaPadre.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnPadresActionPerformed
+
+    private void btnInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscripcionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnInscripcionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -194,6 +218,8 @@ public class Inicio extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlumnos;
     private javax.swing.JButton btnGrados;
+    private javax.swing.JButton btnInscripcion;
+    private javax.swing.JButton btnPadres;
     private javax.swing.JButton btnProfesores;
     private javax.swing.JButton btnSecciones;
     private javax.swing.JButton jButton1;

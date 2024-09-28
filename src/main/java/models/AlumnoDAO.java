@@ -139,6 +139,28 @@ public class AlumnoDAO {
 //        return listPad;
 //    }
     
+    
+        
+        
+  public List<Padre> listarPadres() {
+    List<Padre> padres = new ArrayList<>();
+    String sql = "SELECT id, nombre, apellido FROM padre";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Padre padre = new Padre();
+            padre.setId(rs.getInt("ID"));
+            padre.setNombre(rs.getString("nombre"));
+            padre.setApellido(rs.getString("apellido"));
+            padres.add(padre);
+        }
+    } catch (SQLException e) {
+        System.out.println("Error al listar padres: " + e.getMessage());
+    }
+    return padres;
+}
+    
     public Alumno consultarDatos(int id) {
         String sql = "SELECT * FROM Alumno WHERE ID = ?";
         Alumno alumno = new Alumno();

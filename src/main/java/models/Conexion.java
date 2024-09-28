@@ -11,7 +11,7 @@ public class Conexion {
     Connection conectar = null;
 
     String usuario = "sa";
-    String contrasena = "123456789";  // Asegúrate de que esta contraseña sea correcta
+    String contrasena = "sql1234";  // Asegúrate de que esta contraseña sea correcta
     String bd = "dbcolegio";
     String ip = "localhost";  // Usa "localhost" o la IP correcta si es remota
     String puerto = "1433";  // Verifica que este puerto sea el correcto

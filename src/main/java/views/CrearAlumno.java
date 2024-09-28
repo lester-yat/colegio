@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import models.Alumno;
 import models.AlumnoDAO;
 import models.Grado;
+import models.Padre;
 import models.Seccion;
 
 public class CrearAlumno extends javax.swing.JFrame {
@@ -33,6 +34,14 @@ public class CrearAlumno extends javax.swing.JFrame {
             selectGrado.addItem(nombre);
         }
     }
+    
+        private void cargarPadres() {
+    List<Padre> padres = alumnoDAO.listarPadres();
+    selectPadre.removeAllItems();
+    for (Padre padre : padres) {
+        selectPadre.addItem(padre.getNombre() + " " + padre.getApellido());
+    }
+}
     
 //    public void cargarPadres(){
 //        List<Padre> padres = alumnoDAO.listarPadres();
