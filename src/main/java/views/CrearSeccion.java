@@ -3,6 +3,7 @@ package views;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import models.Grado;
@@ -137,15 +138,25 @@ public class CrearSeccion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (!"".equals(txtNombre.getText()) && !"".equals(txtHoraInicio.getText()) && 
+        if (!"".equals(txtNombre.getText()) && !"".equals(txtHoraInicio.getText()) &&
             !"".equals(txtHoraFinal.getText()) && !"".equals(selectGrado.getSelectedItem())) {
+
             try {
                 SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
+                formatoHora.setLenient(false);
 
-                seccion.setHorarioInicio(new Time(formatoHora.parse(txtHoraInicio.getText()).getTime()));
-                seccion.setHorarioFinal(new Time(formatoHora.parse(txtHoraFinal.getText()).getTime()));
-                seccion.setNombre(txtNombre.getText());
+                Date horaInicio = formatoHora.parse(txtHoraInicio.getText());
+                Date horaFinal = formatoHora.parse(txtHoraFinal.getText());
+
+                if (horaInicio.after(horaFinal)) {
+                    JOptionPane.showMessageDialog(null, "La hora de inicio debe ser menor que la hora final.");
+                    return;
+                }
                 
+                seccion.setHorarioInicio(new Time(horaInicio.getTime()));
+                seccion.setHorarioFinal(new Time(horaFinal.getTime()));
+                seccion.setNombre(txtNombre.getText());
+
                 List<Grado> grados = seccionDAO.listarGrados();
                 for (Grado grado : grados) {
                     if (grado.getNombre().equals(selectGrado.getSelectedItem())) {
@@ -153,21 +164,19 @@ public class CrearSeccion extends javax.swing.JFrame {
                         break;
                     }
                 }
-                
+
                 seccionDAO.guardarSeccion(seccion);
-                JOptionPane.showMessageDialog(null, "Seccion guardado exitosamente.");
+                JOptionPane.showMessageDialog(null, "Sección guardada exitosamente.");
                 ListaSecciones vistaLista = new ListaSecciones();
                 vistaLista.setVisible(true);
                 dispose();
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
             } catch (ParseException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de la fecha: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Error en el formato de la hora: " + e.getMessage());
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar la seccion: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar la sección: " + e.getMessage());
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Los campos estan vacios");
+            JOptionPane.showMessageDialog(null, "Los campos están vacíos.");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

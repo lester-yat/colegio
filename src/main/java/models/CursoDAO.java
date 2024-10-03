@@ -14,29 +14,33 @@ public class CursoDAO {
     Conexion conexion = new Conexion();
     Connection con = conexion.establecerConexion();
     
-    public String columnaProfesores(int idProfesor) {
+    public String columnaProfesores(int idCurso) {
         StringBuilder nombresProfesores = new StringBuilder();
         String sql = "SELECT p.nombre, p.apellido " +
                      "FROM Profesor p " +
                      "INNER JOIN Curso cr ON p.ID = cr.ProfesorID " +
                      "WHERE cr.ID = ?";
-        
+
         try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, idProfesor);
+            ps.setInt(1, idCurso);
             ResultSet rs = ps.executeQuery();
             
-            Set<String> profesoresSet = new HashSet<>();
-            while (rs.next()) {
-                String nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellido");
-                profesoresSet.add(nombreCompleto);
+            if (rs.isBeforeFirst()) {
+                Set<String> profesoresSet = new HashSet<>();
+                while (rs.next()) {
+                    String nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellido");
+                    profesoresSet.add(nombreCompleto);
+                }
+                nombresProfesores.append(String.join(", ", profesoresSet));
+            } else {
+                nombresProfesores.append("No hay profesores asignados a este curso.");
             }
-            
-            nombresProfesores.append(String.join(", ", profesoresSet));
-            
+
         } catch (SQLException e) {
             System.out.println("Error al consultar los nombres de los profesores: " + e.getMessage());
+            return "Error al consultar los profesores.";
         }
-        
+
         return nombresProfesores.toString();
     }
     

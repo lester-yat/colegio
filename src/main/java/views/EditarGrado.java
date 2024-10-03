@@ -1,7 +1,5 @@
 package views;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 import models.Grado;
@@ -15,10 +13,10 @@ public class EditarGrado extends javax.swing.JFrame {
     public int gradoId;
 
     public EditarGrado() {
-                this.setUndecorated(true);
+        this.setUndecorated(true);
         initComponents();
-            this.setLocationRelativeTo(null);
-            setResizable(false); 
+        this.setLocationRelativeTo(null);
+        setResizable(false); 
     }
     
     public EditarGrado(int gradoId) {
@@ -32,7 +30,7 @@ public class EditarGrado extends javax.swing.JFrame {
             txtNombre3.setText(grado.getNombre());
             txtSalon3.setText(grado.getSalon());
             txtNivel3.setText(grado.getNivel());
-            txtAnio3.setText(String.valueOf(grado.getAnio()));
+            txtAnio.setDate(grado.getAnio());
             txtJornada3.setText(grado.getJornada());
             txtCantMaxEstu3.setText(String.valueOf(grado.getCantidadMaxEstudiantes()));
         } else {
@@ -52,13 +50,13 @@ public class EditarGrado extends javax.swing.JFrame {
         jLabel25 = new javax.swing.JLabel();
         txtNivel3 = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
-        txtAnio3 = new javax.swing.JTextField();
         jLabel27 = new javax.swing.JLabel();
         txtJornada3 = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
         txtCantMaxEstu3 = new javax.swing.JTextField();
         btnActualizar1 = new javax.swing.JButton();
         btnCancelar1 = new javax.swing.JButton();
+        txtAnio = new com.toedter.calendar.JDateChooser();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -111,11 +109,6 @@ public class EditarGrado extends javax.swing.JFrame {
         jLabel26.setText("Año");
         getContentPane().add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 240, -1, -1));
 
-        txtAnio3.setBackground(new java.awt.Color(255, 255, 255));
-        txtAnio3.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
-        txtAnio3.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(txtAnio3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 230, 330, -1));
-
         jLabel27.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(255, 255, 255));
         jLabel27.setText("Jornada");
@@ -164,6 +157,7 @@ public class EditarGrado extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnCancelar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 400, -1, -1));
+        getContentPane().add(txtAnio, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 240, 330, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/69.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 970, 550));
@@ -179,18 +173,15 @@ public class EditarGrado extends javax.swing.JFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         if (!"".equals(txtNombre3.getText()) && !"".equals(txtSalon3.getText()) && !"".equals(txtNivel3.getText()) &&
-            !"".equals(txtAnio3.getText()) && !"".equals(txtJornada3.getText()) && !"".equals(txtCantMaxEstu3.getText())) {
+            !"".equals(txtAnio.getDate()) && !"".equals(txtJornada3.getText()) && !"".equals(txtCantMaxEstu3.getText())) {
             try {
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
-
-                grado.setAnio(formatoFecha.parse(txtAnio3.getText()));
-
                 grado.setId(gradoId);
                 grado.setNombre(txtNombre3.getText());
                 grado.setSalon(txtSalon3.getText());
                 grado.setNivel(txtNivel3.getText());
                 grado.setJornada(txtJornada3.getText());
                 grado.setCantidadMaxEstudiantes(Integer.parseInt(txtCantMaxEstu3.getText()));
+                grado.setAnio( (Date) txtAnio.getDate());
 
                 gradoDAO.editarGrado(grado);
                 JOptionPane.showMessageDialog(null, "Grado actualizado exitosamente.");
@@ -198,14 +189,24 @@ public class EditarGrado extends javax.swing.JFrame {
                 vistaLista.setVisible(true);
                 dispose();
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
-            } catch (ParseException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de la fecha: " + e.getMessage());
+                System.out.println("Error en el formato de los datos numéricos: " + e.getMessage());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar el grado: " + e.getMessage());
             }
         } else {
             JOptionPane.showMessageDialog(null, "Los campos estan vacios");
+        }
+        
+        try {
+            int edad = Integer.parseInt(txtSalon3.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El salon debe ser un número entero.");
+        }
+
+        try {
+            int inscripcion = Integer.parseInt(txtCantMaxEstu3.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "La cantidad maxima de estudiantes debe ser un número entero.");
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -241,7 +242,7 @@ public class EditarGrado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
-    private javax.swing.JTextField txtAnio3;
+    private com.toedter.calendar.JDateChooser txtAnio;
     private javax.swing.JTextField txtCantMaxEstu3;
     private javax.swing.JTextField txtJornada3;
     private javax.swing.JTextField txtNivel3;

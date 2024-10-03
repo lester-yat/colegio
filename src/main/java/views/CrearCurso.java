@@ -26,7 +26,7 @@ public class CrearCurso extends javax.swing.JFrame {
     public void cargarProfesor(){
         List<Profesor> profesores = cursoDAO.listarProfesores();
         for (int i = 0; i < profesores.size(); i++) {
-            String nombre = profesores.get(i).getNombre();
+            String nombre = profesores.get(i).getNombre()+" "+profesores.get(i).getApellido();
             selectProfesor.addItem(nombre);
         }
     }
@@ -231,7 +231,7 @@ public class CrearCurso extends javax.swing.JFrame {
     private void selectProfesorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectProfesorActionPerformed
         List<Profesor> profesores = cursoDAO.listarProfesores();
         for (Profesor profesor : profesores) {
-            if (profesor.getNombre().equals(selectProfesor.getSelectedItem())) {
+            if ((profesor.getNombre()+" "+profesor.getApellido()).equals(selectProfesor.getSelectedItem())) {
                 profesorId = profesor.getId();
                 cargarGrados(profesorId);
                 break;
@@ -265,7 +265,7 @@ public class CrearCurso extends javax.swing.JFrame {
                 
                 List<Profesor> profesores = cursoDAO.listarProfesores();
                 for (Profesor profesor : profesores) {
-                    if (profesor.getNombre().equals(selectProfesor.getSelectedItem())) {
+                    if ((profesor.getNombre()+" "+profesor.getApellido()).equals(selectProfesor.getSelectedItem())) {
                         curso.setProfesorID(profesor.getId());
                         break;
                     }

@@ -189,15 +189,24 @@ public class EditarSeccion extends javax.swing.JFrame {
             !"".equals(txtHoraFinal.getText()) && selectGrado.getSelectedItem() != null) {
             try {
                 SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
-                
-                java.sql.Time horarioInicio = new java.sql.Time(formatoHora.parse(txtHoraInicio.getText()).getTime());
-                java.sql.Time horarioFinal = new java.sql.Time(formatoHora.parse(txtHoraFinal.getText()).getTime());
+                formatoHora.setLenient(false);
+
+                Date horaInicio = formatoHora.parse(txtHoraInicio.getText());
+                Date horaFinal = formatoHora.parse(txtHoraFinal.getText());
+
+                if (horaInicio.after(horaFinal)) {
+                    JOptionPane.showMessageDialog(null, "La hora de inicio debe ser menor que la hora final.");
+                    return;
+                }
+
+                java.sql.Time horarioInicio = new java.sql.Time(horaInicio.getTime());
+                java.sql.Time horarioFinal = new java.sql.Time(horaFinal.getTime());
 
                 seccion.setHorarioInicio(horarioInicio);
                 seccion.setHorarioFinal(horarioFinal);
                 seccion.setNombre(txtNombre.getText());
                 seccion.setId(seccionId);
-                
+
                 String selectedGradoNombre = (String) selectGrado.getSelectedItem();
                 Integer gradoId = null;
                 for (Map.Entry<Integer, String> entry : gradoMap.entrySet()) {
@@ -217,8 +226,6 @@ public class EditarSeccion extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Grado seleccionado no encontrado.");
                 }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
             } catch (ParseException e) {
                 JOptionPane.showMessageDialog(null, "Error en el formato de la hora: " + e.getMessage());
             } catch (Exception e) {

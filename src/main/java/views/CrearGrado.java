@@ -1,7 +1,6 @@
 package views;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import models.Grado;
 import models.GradoDAO;
@@ -31,13 +30,13 @@ public class CrearGrado extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtNivel = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtAnio = new javax.swing.JTextField();
         txtJornada = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         txtCantMaxEstu = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        txtAnio = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -85,10 +84,6 @@ public class CrearGrado extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtAnio))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtNivel))
@@ -102,12 +97,15 @@ public class CrearGrado extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(txtNombre))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7))
-                                .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCantMaxEstu, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel6)
+                                        .addComponent(jLabel7))
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtAnio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtCantMaxEstu, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
                                     .addComponent(txtJornada))))
                         .addGap(265, 265, 265))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -135,9 +133,9 @@ public class CrearGrado extends javax.swing.JFrame {
                     .addComponent(txtNivel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5)
+                    .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtJornada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -160,18 +158,14 @@ public class CrearGrado extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (!"".equals(txtNombre.getText()) && !"".equals(txtSalon.getText()) && !"".equals(txtNivel.getText()) && 
-            !"".equals(txtAnio.getText()) && !"".equals(txtJornada.getText()) && !"".equals(txtCantMaxEstu.getText())) {
+            !"".equals(txtAnio.getDate()) && !"".equals(txtJornada.getText()) && !"".equals(txtCantMaxEstu.getText())) {
             try {
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
-                
-                java.util.Date fecha = formatoFecha.parse(txtAnio.getText());
-                grado.setAnio(fecha);
-
                 grado.setNombre(txtNombre.getText());
                 grado.setSalon(txtSalon.getText());
                 grado.setNivel(txtNivel.getText());
                 grado.setJornada(txtJornada.getText());
                 grado.setCantidadMaxEstudiantes(Integer.parseInt(txtCantMaxEstu.getText()));
+                grado.setAnio( (Date) txtAnio.getDate());
                 
                 gradoDAO.guardarGrado(grado);
                 JOptionPane.showMessageDialog(null, "Grado guardado exitosamente.");
@@ -179,15 +173,25 @@ public class CrearGrado extends javax.swing.JFrame {
                 vistaLista.setVisible(true);
                 dispose();
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
-            } catch (ParseException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de la fecha: " + e.getMessage());
+                System.out.println("Error en el formato de los datos numéricos: " + e.getMessage());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar el grado: " + e.getMessage());
             }
         } else {
             JOptionPane.showMessageDialog(null, "Los campos están vacíos");
         }
+        
+        try {
+            int edad = Integer.parseInt(txtSalon.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El salon debe ser un número entero.");
+        }
+
+        try {
+            int inscripcion = Integer.parseInt(txtCantMaxEstu.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "La cantidad maxima de estudiantes debe ser un número entero.");
+        } 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -195,10 +199,7 @@ public class CrearGrado extends javax.swing.JFrame {
         ListaGrados vistaLista = new ListaGrados();
         vistaLista.setVisible(true);
     }//GEN-LAST:event_btnCancelarActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
 
         /* Create and display the form */
@@ -220,7 +221,7 @@ public class CrearGrado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtAnio;
+    private com.toedter.calendar.JDateChooser txtAnio;
     private javax.swing.JTextField txtCantMaxEstu;
     private javax.swing.JTextField txtJornada;
     private javax.swing.JTextField txtNivel;

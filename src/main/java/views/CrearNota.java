@@ -1,6 +1,5 @@
 package views;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +24,7 @@ public class CrearNota extends javax.swing.JFrame {
     public void cargarAlumnos(){
         List<Alumno> alumnos = notaDAO.listarAlumnos();
         for (int i = 0; i < alumnos.size(); i++) {
-            String nombre = alumnos.get(i).getNombre();
+            String nombre = alumnos.get(i).getNombre()+" "+alumnos.get(i).getApellido();
             selectAlumno.addItem(nombre);
         }
     }
@@ -49,13 +48,13 @@ public class CrearNota extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtCalificacion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtFechaRegistro = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         selectAlumno = new javax.swing.JComboBox<>();
         selectCurso = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        txtFechaRegistro = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -140,7 +139,7 @@ public class CrearNota extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
                     .addComponent(txtFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -184,18 +183,16 @@ public class CrearNota extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         if (!"".equals(txtNombre.getText()) && !"".equals(txtCalificacion.getText()) && 
-            !"".equals(txtFechaRegistro.getText()) && selectAlumno.getSelectedItem() != null && 
+            !"".equals(txtFechaRegistro.getDate()) && selectAlumno.getSelectedItem() != null && 
             selectCurso.getSelectedItem() != null) {
             try {
-//                SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
                 nota.setNombre(txtNombre.getText());
                 nota.setCalificacion(Float.parseFloat(txtCalificacion.getText()));
-                nota.setFechaRegistro(formatoFecha.parse(txtFechaRegistro.getText()));
+                nota.setFechaRegistro(txtFechaRegistro.getDate());
                 
                 List<Alumno> alumnos = notaDAO.listarAlumnos();
                 for (Alumno alumno : alumnos) {
-                    if (alumno.getNombre().equals(selectAlumno.getSelectedItem())) {
+                    if ((alumno.getNombre()+" "+alumno.getApellido()).equals(selectAlumno.getSelectedItem())) {
                         nota.setAlumnoID(alumno.getID());
                         break;
                     }
@@ -220,12 +217,18 @@ public class CrearNota extends javax.swing.JFrame {
                 vistaLista.setVisible(true);
                 dispose();
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
+                System.out.println("Error en el formato de los datos numéricos: " + e.getMessage());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar la nota: " + e.getMessage());
             }
         } else {
             JOptionPane.showMessageDialog(null, "Los campos estan vacios");
+        }
+        
+        try {
+            int edad = Integer.parseInt(txtCalificacion.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "La calificacion debe ser un número entero o con decimales.");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -274,7 +277,7 @@ public class CrearNota extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> selectAlumno;
     private javax.swing.JComboBox<String> selectCurso;
     private javax.swing.JTextField txtCalificacion;
-    private javax.swing.JTextField txtFechaRegistro;
+    private com.toedter.calendar.JDateChooser txtFechaRegistro;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

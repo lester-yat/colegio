@@ -1,10 +1,7 @@
 package views;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -175,21 +172,34 @@ public class EditarProfesor extends javax.swing.JFrame {
             txtoDireccion.setText(profesor.getDireccion());
             txtEdad.setText(String.valueOf(profesor.getEdad()));
             txtIdentificacion.setText(profesor.getIdentificacion());
-            txtFechaNacimiento.setText(String.valueOf(profesor.getFecha_nacimiento()));
-            txtTipoIdentificacion.setText(profesor.getTipo_identificacion());
+            txtFechaNacimiento.setDate(profesor.getFecha_nacimiento());
+            txtTipoIdentificacion.setSelectedItem(profesor.getTipo_identificacion());
             txtSalario.setText(String.valueOf(profesor.getSalario()));
             txtEspecialidad.setText(profesor.getEspecialidad());
-            txtFechaContratacion.setText(String.valueOf(profesor.getFecha_contratacion()));
-            txtFechaTerminacion.setText(String.valueOf(profesor.getFecha_terminacion_contrato()));
-            txtEstadoContrato.setText(profesor.getEstado_contrato());
-            txtGenero.setText(profesor.getGenero());
+            txtFechaContratacion.setDate(profesor.getFecha_contratacion());
+            txtFechaTerminacion.setDate(profesor.getFecha_terminacion_contrato());
+            txtEstadoContrato.setSelectedItem(profesor.getEstado_contrato());
+            txtGenero.setSelectedItem(profesor.getGenero());
             txtTipoContrato.setText(profesor.getTipo_contrato());
-            txtEstadoCivil.setText(profesor.getEstado_civil());
+            txtEstadoCivil.setSelectedItem(profesor.getEstado_civil());
         } else {
             System.out.println("No se encontró ningún profesor con el ID: " + profesorId);
         }
 
         cargarRelacionesGradoSeccion(profesorId);
+    }
+    
+    public boolean esNumeroValido(String texto) {
+        try {
+            Integer.parseInt(texto);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    public boolean esTelefonoValido(String telefono) {
+        return telefono.matches("\\d{8}");
     }
     
     @SuppressWarnings("unchecked")
@@ -217,13 +227,10 @@ public class EditarProfesor extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         txtIdentificacion = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        txtTipoIdentificacion = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtEspecialidad = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        txtGenero = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
-        txtEstadoCivil = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -231,24 +238,27 @@ public class EditarProfesor extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         txtoDireccion = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        txtFechaNacimiento = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         txtSalario = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        txtFechaContratacion = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        txtFechaTerminacion = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
-        txtEstadoContrato = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         txtTipoContrato = new javax.swing.JTextField();
+        txtFechaNacimiento = new com.toedter.calendar.JDateChooser();
+        txtFechaContratacion = new com.toedter.calendar.JDateChooser();
+        txtFechaTerminacion = new com.toedter.calendar.JDateChooser();
+        txtGenero = new javax.swing.JComboBox<>();
+        txtEstadoCivil = new javax.swing.JComboBox<>();
+        txtEstadoContrato = new javax.swing.JComboBox<>();
+        txtTipoIdentificacion = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
-        btnActualizar.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        btnActualizar.setFont(new java.awt.Font("Monospaced", 1, 14)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(0, 0, 0));
         btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/actualizar.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
@@ -257,7 +267,7 @@ public class EditarProfesor extends javax.swing.JFrame {
                 btnActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 500, -1, -1));
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 700, 190, -1));
 
         btnCancelar.setBackground(new java.awt.Color(255, 255, 255));
         btnCancelar.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
@@ -297,7 +307,7 @@ public class EditarProfesor extends javax.swing.JFrame {
         tablaGradoSeccion.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPane3.setViewportView(tablaGradoSeccion);
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 350, 630, 130));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 550, 620, 140));
 
         btnAsignarSeccion.setBackground(new java.awt.Color(255, 255, 255));
         btnAsignarSeccion.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
@@ -309,7 +319,7 @@ public class EditarProfesor extends javax.swing.JFrame {
                 btnAsignarSeccionActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAsignarSeccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 700, -1, 70));
+        getContentPane().add(btnAsignarSeccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 470, -1, 70));
 
         tablaSecciones.setBackground(new java.awt.Color(204, 204, 204));
         tablaSecciones.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
@@ -325,7 +335,7 @@ public class EditarProfesor extends javax.swing.JFrame {
         tablaSecciones.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jScrollPane2.setViewportView(tablaSecciones);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 570, 630, 111));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 350, 620, 111));
 
         tablaGrados.setBackground(new java.awt.Color(204, 204, 204));
         tablaGrados.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -409,7 +419,7 @@ public class EditarProfesor extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Identificacion");
+        jLabel5.setText("No. Identificacion");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, -1, -1));
 
         txtIdentificacion.setBackground(new java.awt.Color(255, 255, 255));
@@ -421,11 +431,6 @@ public class EditarProfesor extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Tipo Identificacion");
         getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, -1, -1));
-
-        txtTipoIdentificacion.setBackground(new java.awt.Color(255, 255, 255));
-        txtTipoIdentificacion.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtTipoIdentificacion.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(txtTipoIdentificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 290, -1));
 
         jLabel8.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -442,20 +447,10 @@ public class EditarProfesor extends javax.swing.JFrame {
         jLabel19.setText("Genero");
         getContentPane().add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, -1, 20));
 
-        txtGenero.setBackground(new java.awt.Color(255, 255, 255));
-        txtGenero.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtGenero.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(txtGenero, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 570, 290, -1));
-
         jLabel20.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("Estado Civil");
         getContentPane().add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 620, -1, 21));
-
-        txtEstadoCivil.setBackground(new java.awt.Color(255, 255, 255));
-        txtEstadoCivil.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtEstadoCivil.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(txtEstadoCivil, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 650, 290, -1));
 
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
@@ -496,11 +491,6 @@ public class EditarProfesor extends javax.swing.JFrame {
         jLabel12.setText("Fecha de Nacimiento");
         getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 290, -1, -1));
 
-        txtFechaNacimiento.setBackground(new java.awt.Color(255, 255, 255));
-        txtFechaNacimiento.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtFechaNacimiento.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(txtFechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 330, 370, -1));
-
         jLabel14.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(255, 255, 255));
         jLabel14.setText("Salario");
@@ -521,32 +511,16 @@ public class EditarProfesor extends javax.swing.JFrame {
         jLabel15.setText("Fecha Contratacion");
         getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 450, -1, -1));
 
-        txtFechaContratacion.setBackground(new java.awt.Color(255, 255, 255));
-        txtFechaContratacion.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        txtFechaContratacion.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(txtFechaContratacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 495, 370, 30));
-
         jLabel16.setBackground(new java.awt.Color(255, 255, 255));
         jLabel16.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Fecha Terminacion Contrato");
         getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 530, -1, -1));
 
-        txtFechaTerminacion.setBackground(new java.awt.Color(255, 255, 255));
-        txtFechaTerminacion.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtFechaTerminacion.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(txtFechaTerminacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 570, 370, -1));
-
         jLabel17.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Estado Contrato");
         getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 610, -1, -1));
-
-        txtEstadoContrato.setEditable(false);
-        txtEstadoContrato.setBackground(new java.awt.Color(255, 255, 255));
-        txtEstadoContrato.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        txtEstadoContrato.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(txtEstadoContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 640, 370, -1));
 
         jLabel18.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
@@ -562,6 +536,21 @@ public class EditarProfesor extends javax.swing.JFrame {
             }
         });
         getContentPane().add(txtTipoContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 730, 370, -1));
+        getContentPane().add(txtFechaNacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 330, 370, -1));
+        getContentPane().add(txtFechaContratacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 490, 370, -1));
+        getContentPane().add(txtFechaTerminacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 570, 370, -1));
+
+        txtGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
+        getContentPane().add(txtGenero, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 570, 290, -1));
+
+        txtEstadoCivil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Soltero/a", "Casado/a", "Viudo/a" }));
+        getContentPane().add(txtEstadoCivil, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 650, 290, -1));
+
+        txtEstadoContrato.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+        getContentPane().add(txtEstadoContrato, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 650, 370, -1));
+
+        txtTipoIdentificacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DPI", "Pasaporte" }));
+        getContentPane().add(txtTipoIdentificacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 410, 290, -1));
 
         jLabel6.setFont(new java.awt.Font("Monospaced", 1, 36)); // NOI18N
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/71.png"))); // NOI18N
@@ -573,37 +562,34 @@ public class EditarProfesor extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         if (!"".equals(txtNombre.getText()) && !"".equals(txtApeliido.getText()) && 
             !"".equals(txtEdad.getText()) && !"".equals(txtEmail.getText()) && 
-            !"".equals(txtEspecialidad.getText()) && !"".equals(txtEstadoCivil.getText()) && 
-            !"".equals(txtEstadoContrato.getText()) && !"".equals(txtFechaContratacion.getText()) && 
-            !"".equals(txtFechaNacimiento.getText()) && !"".equals(txtFechaTerminacion.getText()) && 
-            !"".equals(txtGenero.getText()) && !"".equals(txtIdentificacion.getText()) && 
+            !"".equals(txtEspecialidad.getText()) && !"".equals(txtEstadoCivil.getSelectedItem()) && 
+            !"".equals(txtEstadoContrato.getSelectedItem()) && !"".equals(txtFechaContratacion.getDate()) && 
+            !"".equals(txtFechaNacimiento.getDate()) && !"".equals(txtFechaTerminacion.getDate()) && 
+            !"".equals(txtGenero.getSelectedItem()) && !"".equals(txtIdentificacion.getText()) && 
             !"".equals(txtSalario.getText()) && !"".equals(txtTelefono.getText()) && 
-            !"".equals(txtTipoContrato.getText()) && !"".equals(txtTipoIdentificacion.getText()) && 
+            !"".equals(txtTipoContrato.getText()) && !"".equals(txtTipoIdentificacion.getSelectedItem()) && 
             !"".equals(txtoDireccion.getText())) {
 
             try {
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
-
-                profesor.setFecha_nacimiento(formatoFecha.parse(txtFechaNacimiento.getText()));
-                profesor.setFecha_contratacion(formatoFecha.parse(txtFechaContratacion.getText()));
-                profesor.setFecha_terminacion_contrato(formatoFecha.parse(txtFechaTerminacion.getText()));
-
                 profesor.setId(profesorId);
                 profesor.setNombre(txtNombre.getText());
                 profesor.setApellido(txtApeliido.getText());
                 profesor.setEdad(Integer.parseInt(txtEdad.getText()));
                 profesor.setIdentificacion(txtIdentificacion.getText());
-                profesor.setTipo_identificacion(txtTipoIdentificacion.getText());
+                profesor.setTipo_identificacion(txtTipoIdentificacion.getSelectedItem().toString());
                 profesor.setTelefono(txtTelefono.getText());
                 profesor.setEmail(txtEmail.getText());
-                profesor.setGenero(txtGenero.getText());
+                profesor.setGenero(txtGenero.getSelectedItem().toString());
                 profesor.setDireccion(txtoDireccion.getText());
-                profesor.setEstado_civil(txtEstadoCivil.getText());
+                profesor.setEstado_civil(txtEstadoCivil.getSelectedItem().toString());
                 profesor.setEspecialidad(txtEspecialidad.getText());
                 profesor.setSalario(Integer.parseInt(txtSalario.getText()));
-                profesor.setEstado_contrato(txtEstadoContrato.getText());
+                profesor.setEstado_contrato(txtEstadoContrato.getSelectedItem().toString());
                 profesor.setTipo_contrato(txtTipoContrato.getText());
-
+                profesor.setFecha_nacimiento(txtFechaNacimiento.getDate());
+                profesor.setFecha_contratacion(txtFechaContratacion.getDate());
+                profesor.setFecha_terminacion_contrato(txtFechaTerminacion.getDate());
+                
                 profesorDAO.editarProfesor(profesor);
 
                 List<int[]> listaRelaciones = obtenerRelacionesGradoSeccion();
@@ -618,14 +604,26 @@ public class EditarProfesor extends javax.swing.JFrame {
                 vistaLista.setVisible(true);
                 dispose();
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
-            } catch (ParseException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de la fecha: " + e.getMessage());
+                System.out.println("Error en el formato de los datos numéricos: " + e.getMessage());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar el profesor: " + e.getMessage());
             }
         } else {
             JOptionPane.showMessageDialog(null, "Todos los campos deben ser llenados.");
+        }
+        
+        if (!esTelefonoValido(txtTelefono.getText())) {
+            JOptionPane.showMessageDialog(null, "El teléfono debe ser un número de 8 dígitos.");
+        } else if (!esNumeroValido(txtEdad.getText())) {
+            JOptionPane.showMessageDialog(null, "La edad debe ser un número entero.");
+        } else if (!esNumeroValido(txtIdentificacion.getText())) {
+            JOptionPane.showMessageDialog(null, "El número de identificación debe ser un número entero.");
+        } else if (!esNumeroValido(txtSalario.getText())) {
+            JOptionPane.showMessageDialog(null, "El salario debe ser un número entero.");
+        } else if (!esNumeroValido(txtTipoContrato.getText())) {
+            JOptionPane.showMessageDialog(null, "El tipo de contrato debe ser un número entero.");
+        } else {
+            System.out.println("Datos correctos.");
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -743,18 +741,18 @@ public class EditarProfesor extends javax.swing.JFrame {
     private javax.swing.JTextField txtEdad;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEspecialidad;
-    private javax.swing.JTextField txtEstadoCivil;
-    private javax.swing.JTextField txtEstadoContrato;
-    private javax.swing.JTextField txtFechaContratacion;
-    private javax.swing.JTextField txtFechaNacimiento;
-    private javax.swing.JTextField txtFechaTerminacion;
-    private javax.swing.JTextField txtGenero;
+    private javax.swing.JComboBox<String> txtEstadoCivil;
+    private javax.swing.JComboBox<String> txtEstadoContrato;
+    private com.toedter.calendar.JDateChooser txtFechaContratacion;
+    private com.toedter.calendar.JDateChooser txtFechaNacimiento;
+    private com.toedter.calendar.JDateChooser txtFechaTerminacion;
+    private javax.swing.JComboBox<String> txtGenero;
     private javax.swing.JTextField txtIdentificacion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtSalario;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtTipoContrato;
-    private javax.swing.JTextField txtTipoIdentificacion;
+    private javax.swing.JComboBox<String> txtTipoIdentificacion;
     private javax.swing.JTextField txtoDireccion;
     // End of variables declaration//GEN-END:variables
 }

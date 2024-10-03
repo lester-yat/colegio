@@ -1,7 +1,5 @@
 package views;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +37,8 @@ public class EditarNota extends javax.swing.JFrame {
 
         if (nota != null) {
             txtNombre.setText(nota.getNombre());
-            txtCalificacion.setText(String.valueOf(nota.getCalificacion()));
-            txtFechaRegistro.setText(String.valueOf(nota.getFechaRegistro()));
+            txtCalificacion.setText(String.format("%.2f", nota.getCalificacion()));
+            txtFechaRegistro.setDate(nota.getFechaRegistro());
             
             Integer alumnoID = nota.getAlumnoID();
             if (alumnoID != null) {
@@ -66,8 +64,8 @@ public class EditarNota extends javax.swing.JFrame {
         List<Alumno> alumnos = notaDAO.listarAlumnos();
         selectAlumno.removeAllItems();
         for (Alumno alumno : alumnos) {
-            alumnoMap.put(alumno.getID(), alumno.getNombre());
-            selectAlumno.addItem(alumno.getNombre());
+            alumnoMap.put(alumno.getID(), alumno.getNombre()+" "+alumno.getApellido());
+            selectAlumno.addItem(alumno.getNombre()+" "+alumno.getApellido());
         }
     }
     
@@ -91,13 +89,13 @@ public class EditarNota extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtCalificacion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtFechaRegistro = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         selectAlumno = new javax.swing.JComboBox<>();
         selectCurso = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         btnActualizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        txtFechaRegistro = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -182,7 +180,7 @@ public class EditarNota extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
                     .addComponent(txtFechaRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -226,14 +224,12 @@ public class EditarNota extends javax.swing.JFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         if (!"".equals(txtNombre.getText()) && !"".equals(txtCalificacion.getText()) && 
-            !"".equals(txtFechaRegistro.getText()) && selectAlumno.getSelectedItem() != null && 
+            !"".equals(txtFechaRegistro.getDate()) && selectAlumno.getSelectedItem() != null && 
             selectCurso.getSelectedItem() != null) {
             try {
-//                SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
                 nota.setNombre(txtNombre.getText());
                 nota.setCalificacion(Float.parseFloat(txtCalificacion.getText()));
-                nota.setFechaRegistro(formatoFecha.parse(txtFechaRegistro.getText()));
+                nota.setFechaRegistro(txtFechaRegistro.getDate());
                 nota.setId(notaId);
                 
                 String selectedAlumnoNombre = (String) selectAlumno.getSelectedItem();
@@ -266,15 +262,19 @@ public class EditarNota extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Grado seleccionado no encontrado.");
                 }
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
-            } catch (ParseException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de la hora: " + e.getMessage());
+                System.out.println("Error en el formato de los datos numéricos: " + e.getMessage());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error al actualizar la sección: " + e.getMessage());
             }
         } else {
             JOptionPane.showMessageDialog(null, "Los campos están vacíos.");
         }
+        
+        try {
+            int inscripcion = Integer.parseInt(txtCalificacion.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "La calificacion debe ser un número entero o con decimales.");
+        } 
     }//GEN-LAST:event_btnActualizarActionPerformed
     
     public static void main(String args[]) {
@@ -322,7 +322,7 @@ public class EditarNota extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> selectAlumno;
     private javax.swing.JComboBox<String> selectCurso;
     private javax.swing.JTextField txtCalificacion;
-    private javax.swing.JTextField txtFechaRegistro;
+    private com.toedter.calendar.JDateChooser txtFechaRegistro;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

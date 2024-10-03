@@ -1,8 +1,7 @@
 package views;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import models.Alumno;
 import models.AlumnoDAO;
 import models.Grado;
+import models.Padre;
 import models.Seccion;
 
 public class EditarAlumno extends javax.swing.JFrame {
@@ -22,10 +22,10 @@ public class EditarAlumno extends javax.swing.JFrame {
     private Map<Integer, String> gradoMap = new HashMap<>();
 
     public EditarAlumno() {
-               this.setUndecorated(true);
+        this.setUndecorated(true);
+        this.setLocationRelativeTo(null);
         initComponents();
-            this.setLocationRelativeTo(null);
-            setResizable(false); 
+        setResizable(false); 
     }
     
     public void cargarGrados(){
@@ -33,9 +33,18 @@ public class EditarAlumno extends javax.swing.JFrame {
         for (Grado grado : grados) {
             String nombre = grado.getNombre();
             int id = grado.getId(); 
+            gradoMap.put(id, nombre);
+            selectGrado.addItem(nombre);
+        }
+    }
+    
+    public void cargarPadres() {
+        List<Padre> padres = alumnoDAO.listarPadres();
+        padreMap.clear();
 
-            gradoMap.put(id, nombre); // Mapea el ID del grado con su nombre.
-            selectGrado.addItem(nombre); // Añade el nombre del grado al JComboBox.
+        for (Padre padre : padres) {
+            padreMap.put(padre.getId(), padre.getNombre()+" "+padre.getApellido());
+            selectPadre.addItem(padre.getNombre()+" "+padre.getApellido());
         }
     }
     
@@ -51,10 +60,8 @@ public class EditarAlumno extends javax.swing.JFrame {
             ob[1] = seccion.getNombre();
             ob[2] = seccion.getHorarioInicio();
             ob[3] = seccion.getHorarioFinal();
-
             modelo.addRow(ob);
         }
-        
         tablaSecciones.setModel(modelo);
     }
     
@@ -65,7 +72,6 @@ public class EditarAlumno extends javax.swing.JFrame {
             int id = (int) tablaSecciones.getValueAt(fila, 0);
             idsSeleccionados.add(id);
         }
-        System.out.println("IDs seleccionados en Secciones: " + idsSeleccionados);
         return idsSeleccionados;
     }
     
@@ -73,8 +79,8 @@ public class EditarAlumno extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         cargarGrados();
+        cargarPadres();
         this.alumnoId = alumnoId;
-        
         Alumno alumno = alumnoDAO.consultarDatos(alumnoId);
 
         if (alumno != null) {
@@ -90,6 +96,7 @@ public class EditarAlumno extends javax.swing.JFrame {
                     selectPadre.setSelectedItem(padreNombre);
                 }
             }
+            
             Integer gradoID = alumno.getGrado();
             if (gradoID != null) {
                 String gradoNombre = gradoMap.get(gradoID);
@@ -97,7 +104,7 @@ public class EditarAlumno extends javax.swing.JFrame {
                     selectGrado.setSelectedItem(gradoNombre);
                 }
             }
-            txtFechaResgistro.setText(String.valueOf(alumno.getFechaResgistro()));
+            txtFechaResgistro.setDate(alumno.getFechaResgistro());
             
         } else {
             System.out.println("No se encontró ningún alumno con el ID: " + alumnoId);
@@ -122,12 +129,12 @@ public class EditarAlumno extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         selectGrado = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
-        txtFechaResgistro = new javax.swing.JTextField();
         btnActualizar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaSecciones = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
+        txtFechaResgistro = new com.toedter.calendar.JDateChooser();
         jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -218,11 +225,6 @@ public class EditarAlumno extends javax.swing.JFrame {
         jLabel9.setText("Fecha Registro");
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 510, -1, -1));
 
-        txtFechaResgistro.setBackground(new java.awt.Color(255, 255, 255));
-        txtFechaResgistro.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
-        txtFechaResgistro.setForeground(new java.awt.Color(0, 0, 0));
-        getContentPane().add(txtFechaResgistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 510, 280, -1));
-
         btnActualizar.setBackground(new java.awt.Color(255, 255, 255));
         btnActualizar.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(0, 0, 0));
@@ -267,6 +269,7 @@ public class EditarAlumno extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Secciones");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 110, -1, -1));
+        getContentPane().add(txtFechaResgistro, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 510, 270, -1));
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/70.png"))); // NOI18N
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1230, 640));
@@ -278,25 +281,23 @@ public class EditarAlumno extends javax.swing.JFrame {
         if (!"".equals(txtNombre.getText()) && !"".equals(txtApellido.getText()) &&
             !"".equals(txtEdad.getText()) && !"".equals(txtInscripcion.getText()) &&
             !"".equals(selectPadre.getSelectedItem()) && !"".equals(selectGrado.getSelectedItem()) &&
-            !"".equals(txtFechaResgistro.getText())) {
+            !"".equals(txtFechaResgistro.getDate())) {
             try {
-//              SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
-                
                 alumno.setID(alumnoId);
                 alumno.setNombre(txtNombre.getText());
                 alumno.setApellido(txtApellido.getText());
                 alumno.setEdad(Integer.parseInt(txtEdad.getText()));
                 alumno.setInscripcion(Integer.parseInt(txtInscripcion.getText()));
+                alumno.setFechaResgistro( (Date) txtFechaResgistro.getCalendar().getTime());
                 alumno.setPadre(1);
                 
-//                List<Padre> padres = alumnoDAO.listarPadres();
-//                for (Padre padre : padres) {
-//                    if (padre.getNombre().equals(selectPadre.getSelectedItem())) {
-//                        alumno.setPadre(padre.getId());
-//                        break;
-//                    }
-//                }
+                List<Padre> padres = alumnoDAO.listarPadres();
+                for (Padre padre : padres) {
+                    if (padre.getNombre().equals(selectPadre.getSelectedItem())) {
+                        alumno.setPadre(padre.getId());
+                        break;
+                    }
+                }
                                 
                 List<Grado> grados = alumnoDAO.listarGrados();
                 for (Grado grado : grados) {
@@ -305,8 +306,6 @@ public class EditarAlumno extends javax.swing.JFrame {
                         break;
                     }
                 }
-                                
-                alumno.setFechaResgistro(formatoFecha.parse(txtFechaResgistro.getText()));
                 
                 alumnoDAO.editarAlumno(alumno);
 
@@ -322,13 +321,25 @@ public class EditarAlumno extends javax.swing.JFrame {
                 vistaLista.setVisible(true);
                 dispose();
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Error en el formato de los datos numéricos: " + e.getMessage());
+                System.out.println("Error en el formato de los datos numéricos: " + e.getMessage());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Ocurrió un error al guardar la seccion: " + e.getMessage());
             }
         } else {
             JOptionPane.showMessageDialog(null, "Los campos estan vacios");
         }
+        
+        try {
+            int edad = Integer.parseInt(txtEdad.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "La edad debe ser un número entero.");
+        }
+
+        try {
+            int inscripcion = Integer.parseInt(txtInscripcion.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "El número de inscripción debe ser un número entero.");
+        } 
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -411,7 +422,7 @@ public class EditarAlumno extends javax.swing.JFrame {
     private javax.swing.JTable tablaSecciones;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtEdad;
-    private javax.swing.JTextField txtFechaResgistro;
+    private com.toedter.calendar.JDateChooser txtFechaResgistro;
     private javax.swing.JTextField txtInscripcion;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables

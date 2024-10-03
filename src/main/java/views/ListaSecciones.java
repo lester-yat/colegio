@@ -29,14 +29,11 @@ public class ListaSecciones extends javax.swing.JFrame {
         initComponents();
         ListarSecciones();
         this.setLocationRelativeTo(null);
-                    
-            setResizable(false); 
-            
-            
-                   sorter = new TableRowSorter<>(modelo);
+        setResizable(false); 
+        sorter = new TableRowSorter<>(modelo);
         tablaSecciones.setRowSorter(sorter);
         
-               // Agregar listener al campoBuscar para filtrar mientras se escribe
+        // Agregar listener al campoBuscar para filtrar mientras se escribe
         campoBuscar.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
