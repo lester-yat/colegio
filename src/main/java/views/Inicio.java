@@ -196,6 +196,10 @@ public class Inicio extends javax.swing.JFrame {
 
     private void btnInscripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscripcionActionPerformed
         // TODO add your handling code here:
+        ListaInscripciones listaInscripcion = new ListaInscripciones();
+        listaInscripcion.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        listaInscripcion.setVisible(true);
+         this.dispose();
     }//GEN-LAST:event_btnInscripcionActionPerformed
 
     private void btnNotasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNotasActionPerformed

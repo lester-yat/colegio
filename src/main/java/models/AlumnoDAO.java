@@ -28,7 +28,7 @@ public class AlumnoDAO {
                 al.setApellido(rs.getString("apellido"));
                 al.setEdad(rs.getInt("edad"));
                 al.setInscripcion(rs.getInt("InscripcionID"));
-                al.setPadre(rs.getInt("PadreID"));
+                //al.setPadre(rs.getInt("PadreID"));
                 al.setGrado(rs.getInt("GradoID"));
                 listAlum.add(al);
             }

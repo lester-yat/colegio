@@ -42,8 +42,9 @@ CREATE TABLE Seccion (
     FOREIGN KEY (GradoID) REFERENCES Grado(ID) ON DELETE SET NULL
 );
 
+-- Tabla padre
 CREATE TABLE Padre (
-    id INT IDENTITY(1,1) PRIMARY KEY,
+    ID INT IDENTITY(1,1) PRIMARY KEY,
     nombre NVARCHAR(100),
     apellido NVARCHAR(100),
     edad INT,
@@ -52,11 +53,23 @@ CREATE TABLE Padre (
     parentesco NVARCHAR(50)
 );
 
+-- Tabla alumno_padre (relación entre alumno y padre)
+CREATE TABLE Alumno_padre (
+    AlumnoID INT NOT NULL,
+    PadreID INT NOT NULL,
+    PRIMARY KEY (AlumnoID, PadreID),
+    FOREIGN KEY (alumnoid) REFERENCES Alumno(ID) ON DELETE CASCADE,
+    FOREIGN KEY (PadreID) REFERENCES Padre(ID) ON DELETE CASCADE
+);
+
+-- Tabla inscripcion
 CREATE TABLE Inscripcion (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    gradoid INT NOT NULL,
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    AlumnoID INT NOT NULL,
+    GradoID INT NOT NULL,
     fecha_inscripcion DATE,
-    FOREIGN KEY (gradoid) REFERENCES Grado(id)
+    FOREIGN KEY (AlumnoID) REFERENCES Alumno(ID) ON DELETE CASCADE,
+    FOREIGN KEY (GradoID) REFERENCES Grado(ID)
 );
 
 CREATE TABLE Alumno (
